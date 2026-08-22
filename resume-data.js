@@ -2,7 +2,7 @@
 // Keep experience sorted with your most recent role first.
 window.RESUME_DATA = {
   experience: [
-    { title: 'Job Title', company: 'Company Name', period: '2024 — Present' },
-    { title: 'Previous Role', company: 'Other Company', period: '2022 — 2024' },
+    { title: 'Backend Engineer', company: 'IBM', period: 'May 2026 — Aug 2026' },
+    { title: 'Student', company: 'TAMU', period: '2023 — 2027' },
   ],
 };
