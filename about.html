@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>About</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    background: #c3d179;
+    font-family: system-ui, -apple-system, sans-serif;
+    color: #2f3a1a;
+  }
+  body { padding-bottom: 40px; }
+
+  .page-header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+    background: #c3d179;
+    border-bottom: 2px solid #2f3a1a;
+  }
+  .page-header h1 { margin: 0; font-size: 22px; letter-spacing: 0.5px; }
+  button#backBtn {
+    font: inherit;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid #2f3a1a;
+    background: transparent;
+    color: #2f3a1a;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  button#backBtn:hover { background: #2f3a1a; color: #c3d179; }
+
+  main { max-width: 760px; margin: 0 auto; padding: 8px 20px 20px; }
+
+  .about-card {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    background: #d9e29a;
+    border: 1px solid #2f3a1a;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0 28px;
+  }
+  .about-photo {
+    flex: 0 0 132px;
+    width: 132px;
+    height: 132px;
+    border-radius: 50%;
+    border: 3px solid #2f3a1a;
+    object-fit: cover;
+    background: #eef2d9;
+  }
+  .about-text p { margin: 0 0 10px; font-size: 14.5px; line-height: 1.55; }
+  .about-text p:last-child { margin-bottom: 0; }
+
+  .links-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .pill-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-decoration: none;
+    color: #c3d179;
+    background: #2f3a1a;
+    padding: 8px 14px;
+    border-radius: 999px;
+  }
+  .pill-link:hover { background: #232b13; }
+  .pill-link svg { width: 15px; height: 15px; flex: none; }
+
+  .section-heading {
+    margin: 0 0 14px;
+    font-size: 18px;
+    border-bottom: 1px dashed #2f3a1a;
+    padding-bottom: 6px;
+  }
+  .nav-hint { font-size: 13.5px; line-height: 1.6; opacity: 0.85; }
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>About</h1>
+  <button id="backBtn">&larr; Back (B / Esc)</button>
+</div>
+
+<main>
+  <div class="about-card">
+    <img class="about-photo" src="images/headshot.png" alt="Wyatt Voigt">
+    <div class="about-text">
+      <p>Howdy! I'm Wyatt Voigt, TAMU Computer Engineering 2027. I'm passionate about building thoughtful, well-designed solutions and always eager to learn, collaborate, and take on new challenges.</p>
+      <p>Use the D-pad to check out Projects for what I've built, Classes for my coursework, or Extracurriculars for how I spend time outside of it.</p>
+    </div>
+  </div>
+
+  <div class="links-row">
+    <a class="pill-link" href="https://github.com/WyattVO" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+      GitHub
+    </a>
+    <a class="pill-link" href="https://www.linkedin.com/in/wyatt-voigt-b72920385/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M14.82 0H1.18C.53 0 0 .52 0 1.16v13.68C0 15.48.53 16 1.18 16h13.64c.65 0 1.18-.52 1.18-1.16V1.16C16 .52 15.47 0 14.82 0ZM4.75 13.65H2.37V6.14h2.38v7.51ZM3.56 5.1a1.38 1.38 0 1 1 0-2.76 1.38 1.38 0 0 1 0 2.76Zm10.09 8.55h-2.37V9.99c0-.86-.02-1.97-1.2-1.97-1.2 0-1.39.94-1.39 1.91v3.72H6.32V6.14h2.28v1.03h.03c.32-.6 1.09-1.23 2.25-1.23 2.41 0 2.85 1.58 2.85 3.64v4.07Z"/></svg>
+      LinkedIn
+    </a>
+    <a class="pill-link" href="resume.pdf" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 0a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.83a1 1 0 0 0-.29-.7L9.87.29A1 1 0 0 0 9.17 0H4Zm5 1.5L11.5 4H9.5a.5.5 0 0 1-.5-.5V1.5ZM4 8h8v1H4V8Zm0 2.5h8v1H4v-1ZM4 5.5h3v1H4v-1Z"/></svg>
+      Resume
+    </a>
+  </div>
+
+  <section>
+    <h2 class="section-heading">Navigating this site</h2>
+    <p class="nav-hint">This site is a working Game Boy — use the D-pad (or &uarr;/&darr;) to move the menu selection, A (or Enter) to open a section, and B (or Escape) to come back here.</p>
+  </section>
+</main>
+
+<script>
+  function goBack() {
+    if (window.parent && window.parent.__gbGoBack) window.parent.__gbGoBack();
+  }
+  document.getElementById('backBtn').addEventListener('click', goBack);
+  document.addEventListener('keydown', function (e) {
+    var k = e.key.toLowerCase();
+    if (k === 'escape' || k === 'backspace' || k === 'b') goBack();
+  });
+</script>
+</body>
+</html>

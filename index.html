@@ -136,26 +136,34 @@
       <rect x="118" y="118" width="284" height="148" fill="#c3d179" stroke="#2f3a1a" stroke-width="3"/>
       <text x="260" y="136" font-family="'Courier New', monospace" font-weight="700" font-size="13" letter-spacing="3" fill="#2f3a1a" text-anchor="middle">MENU</text>
       <rect x="128" y="142" width="264" height="2" fill="#2f3a1a"/>
-      <polygon id="menuArrow" points="138,153 138,163 148,158" fill="#2f3a1a"/>
+      <polygon id="menuArrow" points="138,152 138,162 148,157" fill="#2f3a1a"/>
       <g class="menu-row" data-index="0">
-        <rect x="128" y="150" width="264" height="18" fill="#000000" opacity="0"/>
-        <text class="menu-item-text" data-index="0" x="156" y="162" font-family="'Courier New', monospace" font-weight="700" font-size="12" letter-spacing="1" fill="#2f3a1a">LINKEDIN</text>
+        <rect x="128" y="150" width="264" height="14" fill="#000000" opacity="0"/>
+        <text class="menu-item-text" data-index="0" x="156" y="161" font-family="'Courier New', monospace" font-weight="700" font-size="10.5" letter-spacing="1" fill="#2f3a1a">ABOUT</text>
       </g>
       <g class="menu-row" data-index="1">
-        <rect x="128" y="172" width="264" height="18" fill="#000000" opacity="0"/>
-        <text class="menu-item-text" data-index="1" x="156" y="184" font-family="'Courier New', monospace" font-weight="700" font-size="12" letter-spacing="1" fill="#2f3a1a">RESUME</text>
+        <rect x="128" y="166" width="264" height="14" fill="#000000" opacity="0"/>
+        <text class="menu-item-text" data-index="1" x="156" y="177" font-family="'Courier New', monospace" font-weight="700" font-size="10.5" letter-spacing="1" fill="#2f3a1a">LINKEDIN</text>
       </g>
       <g class="menu-row" data-index="2">
-        <rect x="128" y="194" width="264" height="18" fill="#000000" opacity="0"/>
-        <text class="menu-item-text" data-index="2" x="156" y="206" font-family="'Courier New', monospace" font-weight="700" font-size="12" letter-spacing="1" fill="#2f3a1a">CLASSES</text>
+        <rect x="128" y="182" width="264" height="14" fill="#000000" opacity="0"/>
+        <text class="menu-item-text" data-index="2" x="156" y="193" font-family="'Courier New', monospace" font-weight="700" font-size="10.5" letter-spacing="1" fill="#2f3a1a">GITHUB</text>
       </g>
       <g class="menu-row" data-index="3">
-        <rect x="128" y="216" width="264" height="18" fill="#000000" opacity="0"/>
-        <text class="menu-item-text" data-index="3" x="156" y="228" font-family="'Courier New', monospace" font-weight="700" font-size="12" letter-spacing="1" fill="#2f3a1a">PROJECTS</text>
+        <rect x="128" y="198" width="264" height="14" fill="#000000" opacity="0"/>
+        <text class="menu-item-text" data-index="3" x="156" y="209" font-family="'Courier New', monospace" font-weight="700" font-size="10.5" letter-spacing="1" fill="#2f3a1a">RESUME</text>
       </g>
       <g class="menu-row" data-index="4">
-        <rect x="128" y="238" width="264" height="18" fill="#000000" opacity="0"/>
-        <text class="menu-item-text" data-index="4" x="156" y="250" font-family="'Courier New', monospace" font-weight="700" font-size="12" letter-spacing="1" fill="#2f3a1a">EXTRACURRICULARS</text>
+        <rect x="128" y="214" width="264" height="14" fill="#000000" opacity="0"/>
+        <text class="menu-item-text" data-index="4" x="156" y="225" font-family="'Courier New', monospace" font-weight="700" font-size="10.5" letter-spacing="1" fill="#2f3a1a">CLASSES</text>
+      </g>
+      <g class="menu-row" data-index="5">
+        <rect x="128" y="230" width="264" height="14" fill="#000000" opacity="0"/>
+        <text class="menu-item-text" data-index="5" x="156" y="241" font-family="'Courier New', monospace" font-weight="700" font-size="10.5" letter-spacing="1" fill="#2f3a1a">PROJECTS</text>
+      </g>
+      <g class="menu-row" data-index="6">
+        <rect x="128" y="246" width="264" height="14" fill="#000000" opacity="0"/>
+        <text class="menu-item-text" data-index="6" x="156" y="257" font-family="'Courier New', monospace" font-weight="700" font-size="10.5" letter-spacing="1" fill="#2f3a1a">EXTRACURRICULARS</text>
       </g>
     </g>
 
@@ -259,13 +267,15 @@
 <script>
 (function () {
   var items = [
+    { label: 'ABOUT', action: function () { openDetail('about.html'); } },
     { label: 'LINKEDIN', action: function () { window.open('https://www.linkedin.com/in/wyatt-voigt-b72920385/', '_blank'); } },
+    { label: 'GITHUB', action: function () { window.open('https://github.com/WyattVO', '_blank'); } },
     { label: 'RESUME', action: function () { window.open('resume.pdf', '_blank'); } },
     { label: 'CLASSES', action: function () { openDetail('classes.html'); } },
     { label: 'PROJECTS', action: function () { openDetail('projects.html'); } },
     { label: 'EXTRACURRICULARS', action: function () { openDetail('extracurriculars.html'); } }
   ];
-  var rowY = [162, 184, 206, 228, 250];
+  var rowY = [161, 177, 193, 209, 225, 241, 257];
 
   var selectedIndex = 0;
   var currentView = 'boot';
