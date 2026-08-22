@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Wyatt Voigt</title>
+<style>
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: #f3f2ee;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+  .stage {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    box-sizing: border-box;
+  }
+  .menu-row, .btn, .btn-simple, .dpad-hit { cursor: pointer; }
+  .btn-cap { transition: transform 80ms ease-out; transform-box: fill-box; transform-origin: center; }
+  .btn-cap:active { transform: scale(0.92); }
+  .dpad-group:has(.dpad-hit:active) .dpad-inner { transform: scale(0.92); }
+  .dpad-inner { transition: transform 80ms ease-out; }
+  .menu-item-text { transition: opacity 120ms ease-out; }
+  #bootView { animation: bootFlicker 900ms steps(1, end) forwards; }
+  #bootView.boot-hide { opacity: 0; transition: opacity 400ms ease-in; pointer-events: none; }
+  #deviceSvg { transition: opacity 400ms ease; }
+  #detailContainer {
+    position: fixed;
+    z-index: 10;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: left 500ms ease, top 500ms ease, width 500ms ease, height 500ms ease, opacity 250ms ease;
+    background: #8a9a48;
+  }
+  #detailFrame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  @keyframes bootFlicker {
+    0%   { opacity: 0; }
+    8%   { opacity: 0.6; }
+    16%  { opacity: 0.05; }
+    24%  { opacity: 0.8; }
+    32%  { opacity: 0.15; }
+    45%  { opacity: 1; }
+    100% { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <svg id="deviceSvg" viewBox="0 0 520 760" width="438" height="640" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#ecebe3"/>
+        <stop offset="100%" stop-color="#c7c6bb"/>
+      </linearGradient>
+      <radialGradient id="sheenGrad" cx="50%" cy="16%" r="55%">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="edgeShade" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#000000" stop-opacity="0.16"/>
+        <stop offset="12%" stop-color="#000000" stop-opacity="0"/>
+        <stop offset="88%" stop-color="#000000" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#000000" stop-opacity="0.16"/>
+      </linearGradient>
+      <linearGradient id="bezelGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#605c6a"/>
+        <stop offset="100%" stop-color="#413e4a"/>
+      </linearGradient>
+      <linearGradient id="screenGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#aebf67"/>
+        <stop offset="100%" stop-color="#8a9a48"/>
+      </linearGradient>
+      <linearGradient id="screenInsetShadow" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#000000" stop-opacity="0.35"/>
+        <stop offset="18%" stop-color="#000000" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+      </linearGradient>
+      <radialGradient id="btnGrad" cx="35%" cy="28%" r="75%">
+        <stop offset="0%" stop-color="#d968a0"/>
+        <stop offset="55%" stop-color="#a3235f"/>
+        <stop offset="100%" stop-color="#7d1a4a"/>
+      </radialGradient>
+      <linearGradient id="dpadGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#4a4a4a"/>
+        <stop offset="100%" stop-color="#141414"/>
+      </linearGradient>
+      <linearGradient id="pillGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#b0adbd"/>
+        <stop offset="100%" stop-color="#726f80"/>
+      </linearGradient>
+      <filter id="raise" x="-60%" y="-60%" width="220%" height="220%">
+        <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.4"/>
+      </filter>
+      <filter id="bodyShadow" x="-50%" y="-50%" width="200%" height="200%">
+        <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000000" flood-opacity="0.28"/>
+      </filter>
+      <clipPath id="bodyClip">
+        <path d="M76,30 L444,30 A26,26 0 0 1 470,56 L470,620 A90,90 0 0 1 380,710 L76,710 A26,26 0 0 1 50,684 L50,56 A26,26 0 0 1 76,30 Z"/>
+      </clipPath>
+    </defs>
+
+    <!-- body -->
+    <path d="M76,30 L444,30 A26,26 0 0 1 470,56 L470,620 A90,90 0 0 1 380,710 L76,710 A26,26 0 0 1 50,684 L50,56 A26,26 0 0 1 76,30 Z"
+          fill="url(#bodyGrad)" stroke="#b7b6ab" stroke-width="1" filter="url(#bodyShadow)"/>
+    <g clip-path="url(#bodyClip)">
+      <rect x="50" y="30" width="420" height="680" fill="url(#edgeShade)"/>
+      <ellipse cx="260" cy="140" rx="260" ry="140" fill="url(#sheenGrad)"/>
+    </g>
+    <path d="M77,35 L443,35 A22,22 0 0 1 465,57 L465,620 A85,85 0 0 1 380,705 L77,705 A22,22 0 0 1 55,683 L55,57 A22,22 0 0 1 77,35 Z"
+          fill="none" stroke="#ffffff" stroke-opacity="0.45" stroke-width="1.5"/>
+
+    <circle cx="92" cy="48" r="6" fill="#38363f"/>
+
+    <!-- title card, in the blank space above the screen -->
+    <text x="260" y="72" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-weight="700" font-size="17" letter-spacing="0.3" fill="#33415e" text-anchor="middle">Wyatt Voigt's Website</text>
+
+    <!-- screen bezel (tagline + accent line removed; screen grown to fill the freed space) -->
+    <rect x="80" y="86" width="360" height="210" rx="22" fill="url(#bezelGrad)" stroke="#302d38" stroke-width="2"/>
+
+    <rect id="screenRect" x="105" y="108" width="310" height="164" rx="10" fill="url(#screenGrad)" stroke="#3a3a2a" stroke-width="2"/>
+    <rect x="105" y="108" width="310" height="164" rx="10" fill="url(#screenInsetShadow)"/>
+    <polygon points="105,108 210,108 140,272 105,272" fill="#ffffff" opacity="0.05"/>
+
+    <!-- boot splash -->
+    <g id="bootView">
+      <rect x="105" y="108" width="310" height="164" rx="10" fill="#3a4a1a"/>
+      <text x="260" y="150" font-family="'Courier New', monospace" font-weight="700" font-size="10" letter-spacing="3" fill="#8fa15a" text-anchor="middle">NOW LOADING</text>
+      <text id="bootRole" x="260" y="180" font-family="'Courier New', monospace" font-weight="700" font-size="16" letter-spacing="1" fill="#c3d179" text-anchor="middle"></text>
+      <text id="bootCompany" x="260" y="202" font-family="'Courier New', monospace" font-weight="700" font-size="12" letter-spacing="1" fill="#c3d179" text-anchor="middle"></text>
+      <text id="bootPeriod" x="260" y="224" font-family="'Courier New', monospace" font-size="10" letter-spacing="1" fill="#8fa15a" text-anchor="middle"></text>
+    </g>
+
+    <!-- menu -->
+    <g id="menuView">
+      <rect x="118" y="118" width="284" height="148" fill="#c3d179" stroke="#2f3a1a" stroke-width="3"/>
+      <text x="260" y="136" font-family="'Courier New', monospace" font-weight="700" font-size="13" letter-spacing="3" fill="#2f3a1a" text-anchor="middle">MENU</text>
+      <rect x="128" y="142" width="264" height="2" fill="#2f3a1a"/>
+      <polygon id="menuArrow" points="138,153 138,163 148,158" fill="#2f3a1a"/>
+      <g class="menu-row" data-index="0">
+        <rect x="128" y="150" width="264" height="18" fill="#000000" opacity="0"/>
+        <text class="menu-item-text" data-index="0" x="156" y="162" font-family="'Courier New', monospace" font-weight="700" font-size="12" letter-spacing="1" fill="#2f3a1a">LINKEDIN</text>
+      </g>
+      <g class="menu-row" data-index="1">
+        <rect x="128" y="172" width="264" height="18" fill="#000000" opacity="0"/>
+        <text class="menu-item-text" data-index="1" x="156" y="184" font-family="'Courier New', monospace" font-weight="700" font-size="12" letter-spacing="1" fill="#2f3a1a">RESUME</text>
+      </g>
+      <g class="menu-row" data-index="2">
+        <rect x="128" y="194" width="264" height="18" fill="#000000" opacity="0"/>
+        <text class="menu-item-text" data-index="2" x="156" y="206" font-family="'Courier New', monospace" font-weight="700" font-size="12" letter-spacing="1" fill="#2f3a1a">CLASSES</text>
+      </g>
+      <g class="menu-row" data-index="3">
+        <rect x="128" y="216" width="264" height="18" fill="#000000" opacity="0"/>
+        <text class="menu-item-text" data-index="3" x="156" y="228" font-family="'Courier New', monospace" font-weight="700" font-size="12" letter-spacing="1" fill="#2f3a1a">PROJECTS</text>
+      </g>
+      <g class="menu-row" data-index="4">
+        <rect x="128" y="238" width="264" height="18" fill="#000000" opacity="0"/>
+        <text class="menu-item-text" data-index="4" x="156" y="250" font-family="'Courier New', monospace" font-weight="700" font-size="12" letter-spacing="1" fill="#2f3a1a">EXTRACURRICULARS</text>
+      </g>
+    </g>
+
+    <rect id="flashOverlay" x="105" y="108" width="310" height="164" rx="10" fill="#ffffff" opacity="0" pointer-events="none"/>
+
+    <!-- battery indicator: LED only -->
+    <circle cx="65" cy="140" r="4" fill="#d5392c"/>
+    <circle cx="63.5" cy="138.5" r="1.3" fill="#ff9a8c" opacity="0.8"/>
+
+    <!-- d-pad: uniform-radius cross, click zones map to up/down -->
+    <g class="dpad-group" transform="translate(150,470)">
+      <g class="dpad-inner">
+        <path d="
+          M 12,-44
+          A 5,5 0 0 1 17,-39
+          L 17,-22
+          A 5,5 0 0 0 22,-17
+          L 39,-17
+          A 5,5 0 0 1 44,-12
+          L 44,12
+          A 5,5 0 0 1 39,17
+          L 22,17
+          A 5,5 0 0 0 17,22
+          L 17,39
+          A 5,5 0 0 1 12,44
+          L -12,44
+          A 5,5 0 0 1 -17,39
+          L -17,22
+          A 5,5 0 0 0 -22,17
+          L -39,17
+          A 5,5 0 0 1 -44,12
+          L -44,-12
+          A 5,5 0 0 1 -39,-17
+          L -22,-17
+          A 5,5 0 0 0 -17,-22
+          L -17,-39
+          A 5,5 0 0 1 -12,-44
+          Z"
+          fill="url(#dpadGrad)" filter="url(#raise)"/>
+        <circle cx="0" cy="0" r="5" fill="#050505"/>
+      </g>
+      <rect class="dpad-hit" data-dir="up" x="-17" y="-44" width="34" height="27" fill="#000000" opacity="0"/>
+      <rect class="dpad-hit" data-dir="down" x="-17" y="17" width="34" height="27" fill="#000000" opacity="0"/>
+    </g>
+
+    <!-- A / B buttons. Note: the outer <g> carries the positional translate() as an
+         attribute; the press-scale lives on an inner group with NO positional transform
+         attribute of its own, because a CSS `transform` on an element replaces (rather
+         than composes with) its `transform` attribute — putting the scale on the same
+         element as the translate would snap the button to the origin while pressed. -->
+    <g class="btn" id="btnB" data-action="back" transform="translate(330,510)">
+      <g class="btn-cap">
+        <circle cx="0" cy="0" r="26" fill="url(#btnGrad)" filter="url(#raise)"/>
+        <ellipse cx="-8" cy="-10" rx="9" ry="6" fill="#ffffff" opacity="0.35" transform="rotate(-20 -8 -10)"/>
+      </g>
+      <text x="0" y="44" font-size="17" font-weight="700" fill="#2a2233" text-anchor="middle" font-family="system-ui, sans-serif">B</text>
+    </g>
+
+    <g class="btn" id="btnA" data-action="confirm" transform="translate(390,460)">
+      <g class="btn-cap">
+        <circle cx="0" cy="0" r="26" fill="url(#btnGrad)" filter="url(#raise)"/>
+        <ellipse cx="-8" cy="-10" rx="9" ry="6" fill="#ffffff" opacity="0.35" transform="rotate(-20 -8 -10)"/>
+      </g>
+      <text x="0" y="44" font-size="17" font-weight="700" fill="#2a2233" text-anchor="middle" font-family="system-ui, sans-serif">A</text>
+    </g>
+
+    <!-- select / start -->
+    <rect x="175" y="590" width="70" height="18" rx="9" fill="url(#pillGrad)" filter="url(#raise)"/>
+    <text x="210" y="626" font-size="8" font-weight="600" letter-spacing="1" fill="#2c2a35" text-anchor="middle" font-family="system-ui, sans-serif">SELECT</text>
+
+    <g class="btn-simple" id="btnStart">
+      <rect x="275" y="590" width="70" height="18" rx="9" fill="url(#pillGrad)" filter="url(#raise)"/>
+      <text x="310" y="626" font-size="8" font-weight="600" letter-spacing="1" fill="#2c2a35" text-anchor="middle" font-family="system-ui, sans-serif">START</text>
+    </g>
+
+    <!-- speaker grille -->
+    <g transform="rotate(-25 400 650)">
+      <rect x="372" y="618" width="56" height="6" rx="3" fill="#8c8a80"/>
+      <rect x="372" y="631" width="56" height="6" rx="3" fill="#8c8a80"/>
+      <rect x="372" y="644" width="56" height="6" rx="3" fill="#8c8a80"/>
+      <rect x="372" y="657" width="56" height="6" rx="3" fill="#8c8a80"/>
+      <rect x="372" y="670" width="56" height="6" rx="3" fill="#8c8a80"/>
+      <rect x="372" y="683" width="56" height="6" rx="3" fill="#8c8a80"/>
+    </g>
+  </svg>
+</div>
+<div id="detailContainer">
+  <iframe id="detailFrame" title="Section detail"></iframe>
+</div>
+
+<script src="resume-data.js"></script>
+<script>
+(function () {
+  var items = [
+    { label: 'LINKEDIN', action: function () { window.open('https://www.linkedin.com/in/wyatt-voigt-b72920385/', '_blank'); } },
+    { label: 'RESUME', action: function () { window.open('resume.pdf', '_blank'); } },
+    { label: 'CLASSES', action: function () { openDetail('classes.html'); } },
+    { label: 'PROJECTS', action: function () { openDetail('projects.html'); } },
+    { label: 'EXTRACURRICULARS', action: function () { openDetail('extracurriculars.html'); } }
+  ];
+  var rowY = [162, 184, 206, 228, 250];
+
+  var selectedIndex = 0;
+  var currentView = 'boot';
+  var bootEnded = false;
+
+  var deviceSvg = document.getElementById('deviceSvg');
+  var screenRect = document.getElementById('screenRect');
+  var detailContainer = document.getElementById('detailContainer');
+  var detailFrame = document.getElementById('detailFrame');
+  var menuView = document.getElementById('menuView');
+  var bootView = document.getElementById('bootView');
+  var flashOverlay = document.getElementById('flashOverlay');
+  var menuArrow = document.getElementById('menuArrow');
+  var rowTexts = Array.prototype.slice.call(document.querySelectorAll('.menu-item-text'));
+  var rowGroups = Array.prototype.slice.call(document.querySelectorAll('.menu-row'));
+
+  function renderMenu() {
+    rowTexts.forEach(function (el) {
+      var i = Number(el.getAttribute('data-index'));
+      el.style.opacity = i === selectedIndex ? '1' : '0.55';
+    });
+    var y = rowY[selectedIndex];
+    menuArrow.setAttribute('points', '138,' + (y - 9) + ' 138,' + (y + 1) + ' 148,' + (y - 4));
+  }
+
+  function flashScreen(cb) {
+    flashOverlay.style.transition = 'none';
+    flashOverlay.style.opacity = '0';
+    requestAnimationFrame(function () {
+      flashOverlay.style.transition = 'opacity 150ms ease-out';
+      flashOverlay.style.opacity = '0.85';
+      setTimeout(function () {
+        flashOverlay.style.transition = 'opacity 150ms ease-in';
+        flashOverlay.style.opacity = '0';
+        setTimeout(cb, 150);
+      }, 150);
+    });
+  }
+
+  function moveSelection(delta) {
+    if (currentView !== 'menu') return;
+    selectedIndex = (selectedIndex + delta + items.length) % items.length;
+    renderMenu();
+  }
+
+  function confirmSelection() {
+    if (currentView !== 'menu') return;
+    flashScreen(function () { items[selectedIndex].action(); });
+  }
+
+  function openDetail(page) {
+    currentView = 'detail';
+    var r = screenRect.getBoundingClientRect();
+    detailContainer.style.transition = 'none';
+    detailContainer.style.left = r.left + 'px';
+    detailContainer.style.top = r.top + 'px';
+    detailContainer.style.width = r.width + 'px';
+    detailContainer.style.height = r.height + 'px';
+    detailContainer.style.opacity = '0';
+    detailFrame.src = page;
+    void detailContainer.offsetWidth;
+    requestAnimationFrame(function () {
+      detailContainer.style.transition = '';
+      detailContainer.style.pointerEvents = 'auto';
+      detailContainer.style.opacity = '1';
+      detailContainer.style.left = '0px';
+      detailContainer.style.top = '0px';
+      detailContainer.style.width = '100vw';
+      detailContainer.style.height = '100vh';
+      deviceSvg.style.opacity = '0';
+    });
+  }
+
+  function goBack() {
+    if (currentView !== 'detail') return;
+    currentView = 'menu';
+    // reclaim keyboard focus from the iframe so arrow/A/B keys reach the menu again
+    try { detailFrame.blur(); } catch (e) {}
+    window.focus();
+    var r = screenRect.getBoundingClientRect();
+    deviceSvg.style.opacity = '1';
+    detailContainer.style.opacity = '0';
+    detailContainer.style.left = r.left + 'px';
+    detailContainer.style.top = r.top + 'px';
+    detailContainer.style.width = r.width + 'px';
+    detailContainer.style.height = r.height + 'px';
+    setTimeout(function () {
+      detailContainer.style.pointerEvents = 'none';
+      detailFrame.src = 'about:blank';
+    }, 500);
+  }
+  window.__gbGoBack = goBack;
+
+  function renderBootExperience() {
+    var experience = window.RESUME_DATA && window.RESUME_DATA.experience;
+    var latest = experience && experience[0];
+    if (!latest) return;
+    document.getElementById('bootRole').textContent = latest.title;
+    document.getElementById('bootCompany').textContent = '@ ' + latest.company;
+    document.getElementById('bootPeriod').textContent = latest.period;
+  }
+  renderBootExperience();
+
+  function endBoot() {
+    if (bootEnded) return;
+    bootEnded = true;
+    bootView.classList.add('boot-hide');
+    currentView = 'menu';
+    renderMenu();
+  }
+
+  setTimeout(endBoot, 1600);
+
+  document.addEventListener('keydown', function (e) {
+    if (currentView === 'boot') { endBoot(); return; }
+    var key = e.key.toLowerCase();
+    if (key === 'arrowup') { moveSelection(-1); }
+    else if (key === 'arrowdown') { moveSelection(1); }
+    else if (key === 'enter' || key === ' ' || key === 'a') { e.preventDefault(); confirmSelection(); }
+    else if (key === 'escape' || key === 'backspace' || key === 'b') { goBack(); }
+  });
+
+  bootView.addEventListener('click', endBoot);
+
+  rowGroups.forEach(function (g) {
+    g.addEventListener('click', function () {
+      if (currentView === 'boot') { endBoot(); return; }
+      if (currentView !== 'menu') return;
+      selectedIndex = Number(g.getAttribute('data-index'));
+      renderMenu();
+      confirmSelection();
+    });
+  });
+
+  document.querySelectorAll('.dpad-hit').forEach(function (hit) {
+    hit.addEventListener('click', function () {
+      if (currentView === 'boot') { endBoot(); return; }
+      moveSelection(hit.getAttribute('data-dir') === 'up' ? -1 : 1);
+    });
+  });
+
+  document.getElementById('btnA').addEventListener('click', function () {
+    if (currentView === 'boot') { endBoot(); return; }
+    confirmSelection();
+  });
+  document.getElementById('btnB').addEventListener('click', function () {
+    if (currentView === 'boot') { endBoot(); return; }
+    goBack();
+  });
+  document.getElementById('btnStart').addEventListener('click', function () {
+    if (currentView === 'boot') { endBoot(); return; }
+    confirmSelection();
+  });
+
+  renderMenu();
+})();
+</script>
+</body>
+</html>

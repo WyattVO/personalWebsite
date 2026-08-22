@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Boy Portfolio</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="gameboy">
+      <div class="top-branding">
+        <div class="gameboy-text">Nintendo GAME BOY™</div>
+        <div class="dot-matrix-text">DOT MATRIX WITH STEREO SOUND</div>
+      </div>
+
+      <div class="screen-unit">
+        <div class="battery-led"></div>
+        <div class="screen">
+          <div id="menu-view" class="menu-view">
+            <div class="menu-cursor"></div>
+            <ul class="menu-list">
+              <li data-target="projects">Projects</li>
+              <li data-target="resume">Resume</li>
+              <li data-target="about">About</li>
+              <li data-target="contact">Contact</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="dpad">
+          <button class="dpad-btn dpad-up" aria-label="Menu Up"></button>
+          <button class="dpad-btn dpad-left" aria-label="Menu Left"></button>
+          <button class="dpad-btn dpad-right" aria-label="Menu Right"></button>
+          <button class="dpad-btn dpad-down" aria-label="Menu Down"></button>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn btn-b" aria-label="B Button"></button>
+          <button class="btn btn-a" aria-label="A Button (Select)"></button>
+        </div>
+
+        <div class="middle-buttons">
+          <button class="pill-btn select-btn">SELECT</button>
+          <button class="pill-btn start-btn">START</button>
+        </div>
+
+        <div class="speaker"></div>
+      </div>
+
+      <div class="label-battery">
+        <span class="label-text">BATTERY</span>
+      </div>
+    </div>
+
+    <!-- Popup panels -->
+    <section class="popup" id="projects">
+      <button class="close-btn">B — Back</button>
+      <h1>Projects</h1>
+      <div class="popup-content">
+        <div class="project-card">
+          <h3>Project Title Here</h3>
+          <p class="project-desc">
+            Short description of what this project does.
+          </p>
+          <div class="project-tags">
+            <span class="tag">JavaScript</span>
+            <span class="tag">React</span>
+          </div>
+        </div>
+        <div class="project-card">
+          <h3>Another Project</h3>
+          <p class="project-desc">Another interesting project description.</p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Data</span>
+          </div>
+        </div>
+        <div class="project-card">
+          <h3>Third Project</h3>
+          <p class="project-desc">Yet another cool project you've built.</p>
+          <div class="project-tags">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+          </div>
+        </div>
+      </div>
+      <p style="margin-top: 1.5rem; font-size: 0.8rem; opacity: 0.7">
+        💡 Edit <code>index.html</code> to add your own projects
+      </p>
+    </section>
+
+    <section class="popup" id="resume">
+      <button class="close-btn">B — Back</button>
+      <h1>Resume</h1>
+      <div class="popup-content">
+        <p>
+          Your professional summary goes here. Highlight key skills, experience,
+          and achievements.
+        </p>
+        <h3 style="margin-top: 1rem">Experience</h3>
+        <ul class="resume-list">
+          <li>Job Title at Company (Year)</li>
+          <li>Previous Role at Other Company (Year)</li>
+        </ul>
+        <h3>Skills</h3>
+        <ul class="resume-list">
+          <li>JavaScript, React, Node.js</li>
+          <li>Python, Django, PostgreSQL</li>
+          <li>HTML, CSS, Web Design</li>
+        </ul>
+        <p style="margin-top: 1rem">
+          <a href="resume.pdf" class="popup-link"
+            >📄 Download Full Resume (PDF)</a
+          >
+        </p>
+      </div>
+      <p style="margin-top: 1.5rem; font-size: 0.8rem; opacity: 0.7">
+        💡 Add your resume.pdf to the project folder
+      </p>
+    </section>
+
+    <section class="popup" id="about">
+      <button class="close-btn">B — Back</button>
+      <h1>About Me</h1>
+      <div class="popup-content">
+        <div class="about-photo-placeholder">[Your Photo]</div>
+        <p style="margin-top: 1rem">
+          Hi! I'm a developer passionate about creating interactive web
+          experiences. This Game Boy-themed portfolio is a fun twist on the
+          classic personal website.
+        </p>
+        <p>
+          I enjoy building projects that blend retro aesthetics with modern web
+          technology. When I'm not coding, you might find me gaming on actual
+          Game Boys from the 90s!
+        </p>
+        <p>
+          Feel free to explore my projects and get in touch if you'd like to
+          collaborate.
+        </p>
+      </div>
+    </section>
+
+    <section class="popup" id="contact">
+      <button class="close-btn">B — Back</button>
+      <h1>Contact</h1>
+      <div class="popup-content">
+        <p>Get in touch! Here are the best ways to reach me:</p>
+        <ul class="contact-list">
+          <li>
+            <strong>Email:</strong>
+            <a href="mailto:wyattthepowerful@gmail.com" class="popup-link"
+              >wyattthepowerful@gmail.com</a
+            >
+          </li>
+          <li>
+            <strong>GitHub:</strong>
+            <a href="https://github.com" class="popup-link" target="_blank"
+              >github.com/yourname</a
+            >
+          </li>
+          <li>
+            <strong>LinkedIn:</strong>
+            <a href="https://linkedin.com" class="popup-link" target="_blank"
+              >linkedin.com/in/yourname</a
+            >
+          </li>
+          <li>
+            <strong>Twitter:</strong>
+            <a href="https://twitter.com" class="popup-link" target="_blank"
+              >@yourhandle</a
+            >
+          </li>
+        </ul>
+      </div>
+      <p style="margin-top: 1.5rem; font-size: 0.8rem; opacity: 0.7">
+        💡 Update links in <code>index.html</code> with your actual profiles
+      </p>
+    </section>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

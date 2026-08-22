@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Classes</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    background: #c3d179;
+    font-family: system-ui, -apple-system, sans-serif;
+    color: #2f3a1a;
+  }
+  body { padding-bottom: 40px; }
+
+  .page-header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+    background: #c3d179;
+    border-bottom: 2px solid #2f3a1a;
+  }
+  .page-header h1 { margin: 0; font-size: 22px; letter-spacing: 0.5px; }
+  button#backBtn {
+    font: inherit;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid #2f3a1a;
+    background: transparent;
+    color: #2f3a1a;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  button#backBtn:hover { background: #2f3a1a; color: #c3d179; }
+
+  main { max-width: 760px; margin: 0 auto; padding: 8px 20px 20px; }
+  .intro { opacity: 0.8; font-size: 14px; line-height: 1.5; margin: 12px 0 28px; }
+
+  .term {
+    margin-bottom: 34px;
+  }
+  .term-heading {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 4px;
+    border-bottom: 1px dashed #2f3a1a;
+    padding-bottom: 6px;
+  }
+  .term-heading h2 { margin: 0; font-size: 18px; }
+  .term-meta { font-size: 12px; opacity: 0.65; font-weight: 600; }
+  .term-badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background: #2f3a1a;
+    color: #c3d179;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .term-link {
+    flex-basis: 100%;
+    font-size: 12.5px;
+    opacity: 0.8;
+    margin: 2px 0 0;
+  }
+  .term-link a { color: #2f3a1a; font-weight: 700; }
+
+  .course-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .course-card {
+    display: flex;
+    gap: 14px;
+    background: #d9e29a;
+    border: 1px solid #2f3a1a;
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .course-img-wrap {
+    flex: 0 0 60px;
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    background: #eef2d9;
+    border: 1px solid rgba(47,58,26,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .course-img-wrap img { max-width: 78%; max-height: 78%; object-fit: contain; }
+  .course-img-wrap.photo img { width: 100%; height: 100%; object-fit: cover; max-width: 100%; max-height: 100%; }
+  .course-body { flex: 1; min-width: 0; }
+  .course-code {
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1px;
+    opacity: 0.75;
+  }
+  .course-title { margin: 2px 0 6px; font-size: 16px; }
+  .course-desc { margin: 0 0 6px; font-size: 13.5px; line-height: 1.45; }
+  .course-note {
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 1.45;
+    font-style: italic;
+    opacity: 0.85;
+    border-left: 2px solid #2f3a1a;
+    padding-left: 8px;
+  }
+  .course-impact {
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 1.45;
+    background: rgba(138, 154, 72, 0.3);
+    border-radius: 6px;
+    padding: 7px 9px;
+  }
+  .impact-label {
+    display: inline-block;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 10.5px;
+    letter-spacing: 0.6px;
+    margin-right: 5px;
+  }
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>Classes</h1>
+  <button id="backBtn">&larr; Back (B / Esc)</button>
+</div>
+
+<main>
+  <p class="intro">
+    A rundown of coursework at Texas A&amp;M and before, most recent first — official course
+    descriptions, why each one actually mattered, and a few personal notes from along the way.
+  </p>
+
+  <section class="term">
+    <div class="term-heading">
+      <h2>Fall 2026</h2>
+    </div>
+    <div class="course-grid">
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/blueprint.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">ECEN 403</div>
+          <h3 class="course-title">Electrical Design Laboratory I</h3>
+          <p class="course-desc">The start of the senior design sequence — team-based project engineering as practiced in industry, from project proposal through execution and validation planning.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>Kicks off my senior design project — the first time the degree turns into a real, sponsor-backed engineering project instead of a class assignment.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/vlsi-layout.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">ECEN 475</div>
+          <h3 class="course-title">Introduction to VLSI Systems Design</h3>
+          <p class="course-desc">Design and fabrication of microelectronic circuits, with an emphasis on very-large-scale integration (VLSI) digital systems using modern design tools.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>Closes the loop from ECEN 248's basic logic gates all the way to an actual fabricated chip.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/gear.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">CSCE 410</div>
+          <h3 class="course-title">Operating Systems</h3>
+          <p class="course-desc">How operating systems evolved alongside computer architecture — CPU scheduling, memory and resource allocation, and process coordination and management.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>Ties architecture, systems programming, and algorithms together into the one piece of software every other program runs on top of.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/algorithm-graph.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">CSCE 463</div>
+          <h3 class="course-title">Networks and Distributed Processing</h3>
+          <p class="course-desc">Computer network design and protocol analysis through a layered-architecture lens, mixing network engineering theory with hands-on protocol programming.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>Directly applicable to almost any distributed or web-connected system I'll ever build.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/speech-bubble.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">CSCE 481 &middot; 1 credit</div>
+          <h3 class="course-title">Seminar</h3>
+          <p class="course-desc">A seminar exposing students to current topics in computer science with a focus on leader development — job seeking, the workplace, and graduate school, via invited speakers.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>A low-key but useful gut-check on career planning and what industry versus grad school actually look like.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/globe.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">ANTH 210</div>
+          <h3 class="course-title">Social and Cultural Anthropology</h3>
+          <p class="course-desc">A core anthropology course examining human cultures and societies — kinship, belief systems, economics, and social organization — through a cross-cultural, comparative lens.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>A required look outside engineering — a reminder that the systems I build are used by people shaped by very different cultures and assumptions.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="term">
+    <div class="term-heading">
+      <h2>Summer 2026</h2>
+      <span class="term-badge">Study Abroad — France</span>
+      <p class="term-link">Read more about this study abroad experience on <a href="https://www.linkedin.com/in/wyatt-voigt-b72920385/" target="_blank" rel="noopener">LinkedIn</a>.</p>
+    </div>
+    <div class="course-grid">
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/complexity-curve.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">CSCE 411</div>
+          <h3 class="course-title">Design and Analysis of Algorithms</h3>
+          <p class="course-desc">Algorithm design paradigms, time/space efficiency analysis, correctness proofs, and an introduction to NP-completeness and undecidability.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>Big-O analysis is the difference between code that works and code that scales — a core skill for any technical interview or production system.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="term">
+    <div class="term-heading">
+      <h2>Spring 2026</h2>
+    </div>
+    <div class="course-grid">
+      <article class="course-card">
+        <div class="course-img-wrap photo"><img src="images/classes/microchip.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">ECEN 454</div>
+          <h3 class="course-title">Digital Integrated Circuit Design</h3>
+          <p class="course-desc">Analysis and design of digital integrated circuits using MOS and bipolar technology, with computer-aided simulation.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>Seeing how a chip is actually laid out and simulated demystified the hardware inside every device I use.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap photo"><img src="images/classes/fpga-board.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">ECEN 449</div>
+          <h3 class="course-title">Microprocessor System Design</h3>
+          <p class="course-desc">Hands-on FPGA-based design — building microprocessor systems in Verilog, memory-mapped I/O, interrupts, and hardware/software co-design.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>Building a working microprocessor system on an FPGA connected years of digital logic theory into one tangible, working system.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/resistor-opamp.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">ECEN 325</div>
+          <h3 class="course-title">Electronics</h3>
+          <p class="course-desc">Analog circuit design — op-amps, diodes, BJTs, and MOSFETs — plus linear and non-linear circuit analysis using Laplace transforms and Bode plots.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>Analog is where theory meets the messiness of real components — this built the intuition for reading and debugging real circuits.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/checklist.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">CSCE 331</div>
+          <h3 class="course-title">Foundations of Software Engineering</h3>
+          <p class="course-desc">A writing-intensive, team-based course focused on building a larger piece of software together, emphasizing integration, documentation, and process.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>My team designed and built a full website together end-to-end, and this is where I learned how much one person's code affects everyone else's on a shared codebase. It's also where Git and GitHub went from a checkbox skill to something I now use daily for version control and real collaboration.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="term">
+    <div class="term-heading">
+      <h2>Fall 2025</h2>
+      <span class="term-meta">13 credit hours</span>
+    </div>
+    <div class="course-grid">
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/statistics-chart.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">STAT 211</div>
+          <h3 class="course-title">Principles of Statistics I</h3>
+          <p class="course-desc">Data summaries, probability distributions, sampling distributions, hypothesis testing, and regression.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>Statistics literacy that's paid off in every lab report and dataset since — knowing when a result is actually significant.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/math-equations.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">MATH 311</div>
+          <h3 class="course-title">Topics in Applied Mathematics I</h3>
+          <p class="course-desc">Linear algebra — matrices, vector spaces, eigenvalues — paired with vector calculus: gradient, divergence, curl, and the integral theorems.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>The linear algebra here is the backbone behind everything from computer graphics to machine learning.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/sine-wave.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">ECEN 314</div>
+          <h3 class="course-title">Signals and Systems</h3>
+          <p class="course-desc">Analysis of continuous and discrete-time signals and systems — Fourier series/transforms, Laplace and Z-transforms, convolution, and system stability.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>This is the math behind every sensor, filter, and communication system in ECE — the class that made it concrete instead of abstract.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/terminal.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">CSCE 313 (Honors)</div>
+          <h3 class="course-title">Introduction to Computer Systems</h3>
+          <p class="course-desc">Systems-level programming — the OS/application interface, inter-process communication, introductory network programming, and basic computer security — with hands-on labs.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>First class where the OS stopped being invisible — writing code that talks directly to processes and the network.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="term">
+    <div class="term-heading">
+      <h2>Summer 2025</h2>
+      <span class="term-badge">Study Abroad — Japan</span>
+      <span class="term-meta">7 credit hours</span>
+      <p class="term-link">Read more about this study abroad experience on <a href="https://www.linkedin.com/in/wyatt-voigt-b72920385/" target="_blank" rel="noopener">LinkedIn</a>.</p>
+    </div>
+    <div class="course-grid">
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/multicore-grid.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">ECEN 469</div>
+          <h3 class="course-title">Advanced Computer Architecture</h3>
+          <p class="course-desc">Builds on core architecture with advanced memory system design, pipelining techniques, out-of-order execution, and multiprocessor/parallel structures.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>Learning advanced architecture alongside engineers from another country gave a broader, less US-centric view of how the industry builds hardware.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/cpu-chip.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">ECEN 350</div>
+          <h3 class="course-title">Computer Architecture and Design</h3>
+          <p class="course-desc">How computers are built from the instruction set up — datapath and control design, pipelining, and memory hierarchy — using register-transfer languages and simulation tools.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>Demystified what a CPU actually does between fetching an instruction and executing it — the biggest lightbulb moment of the degree so far.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="term">
+    <div class="term-heading">
+      <h2>Spring 2025</h2>
+      <span class="term-meta">14 credit hours</span>
+    </div>
+    <div class="course-grid">
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/math-equations.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">MATH 308</div>
+          <h3 class="course-title">Differential Equations</h3>
+          <p class="course-desc">Ordinary differential equations, series solutions, Laplace transforms, and systems of differential equations.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>Differential equations show up constantly in signals, systems, and controls — this is what made those later classes tractable.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap photo"><img src="images/classes/circuit-board.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">ECEN 214</div>
+          <h3 class="course-title">Electrical Circuit Theory</h3>
+          <p class="course-desc">Fundamentals of circuit analysis — Ohm's and Kirchhoff's laws, resistive/capacitive/inductive circuits, and Thevenin/Norton equivalents.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>Circuit fundamentals that underpin every hardware class that followed, from digital design to VLSI.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/venn-diagram.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">CSCE 222</div>
+          <h3 class="course-title">Discrete Structures for Computing</h3>
+          <p class="course-desc">Mathematical foundations for computing — logic, proofs, and set theory — plus models of computation like finite state machines and Turing machines.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>Gave me the proof-and-logic toolkit that makes reasoning about whether an algorithm is actually correct possible.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/binary-tree.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">CSCE 221</div>
+          <h3 class="course-title">Data Structures &amp; Algorithms</h3>
+          <p class="course-desc">Core data structures — stacks, queues, lists, trees, graphs, and hash tables — along with sorting, searching, and analyzing algorithm performance.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>The data structures learned here show up in essentially every technical interview and every serious codebase since.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="term">
+    <div class="term-heading">
+      <h2>Freshman Year — Texas A&amp;M</h2>
+    </div>
+    <div class="course-grid">
+      <article class="course-card">
+        <div class="course-img-wrap photo"><img src="images/classes/logic-gates.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">ECEN 248</div>
+          <h3 class="course-title">Introduction to Digital Systems Design</h3>
+          <p class="course-desc">Foundational digital logic course — combinational and sequential circuit design, Boolean algebra, and Verilog.</p>
+          <p class="course-note">Taught basic gates and Boolean logic, expanding into the more physical side of technology — exciting as a Computer Engineering major.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>The first time hardware stopped being a black box — understanding gates made everything built on top of them make sense.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/cpp-logo.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">CSCE 120</div>
+          <h3 class="course-title">Program Design and Concepts</h3>
+          <p class="course-desc">Introduces program design and computational thinking using C++, including basic and aggregate data types.</p>
+          <p class="course-note">Taught me the basics of C++, which felt similar to Java.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>Built the C++ foundation that essentially every later systems and algorithms course at A&amp;M assumes you already have.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/python-logo.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">ENGR 102</div>
+          <h3 class="course-title">Engineering Lab I: Computation</h3>
+          <p class="course-desc">The required first-year engineering computation course at Texas A&amp;M — Python for engineering problem solving, covering numerical methods, data analysis, and simulation.</p>
+          <p class="course-note">My first college coding class, and my first time using Python. A project I remember fondly: parsing 50 years of weather data from a CSV file to find averages, maxes, and mins.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>First real taste of using code to solve an engineering problem instead of just an assignment — turning raw data into an actual answer.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="term">
+    <div class="term-heading">
+      <h2>High School</h2>
+    </div>
+    <div class="course-grid">
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/java-logo.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">SENIOR YEAR</div>
+          <h3 class="course-title">AP Computer Science A</h3>
+          <p class="course-desc">A college-level AP course in object-oriented programming with Java, covering classes, arrays, and algorithms, and ending in the AP exam.</p>
+          <p class="course-note">My favorite class of high school. Coincided with Robotics; for the final project, my partner and I built a Snake game from scratch in Java.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>Proved I could hold my own in a full object-oriented language and helped me decide to pursue Computer Engineering in college.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/javascript-logo.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">JUNIOR YEAR</div>
+          <h3 class="course-title">Computer Science B</h3>
+          <p class="course-desc">A non-AP course typically used as a stepping stone toward AP Computer Science A, focused on JavaScript fundamentals.</p>
+          <p class="course-note">Taken fully online because of COVID-19. Taught the basics of JavaScript, which prepared me for AP Computer Science A.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>Built the JavaScript fluency that made the jump into AP Computer Science A much smoother.</p>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-img-wrap"><img src="images/classes/scratch-logo.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="course-body">
+          <div class="course-code">SOPHOMORE YEAR</div>
+          <h3 class="course-title">AP Computer Science Principles</h3>
+          <p class="course-desc">An introductory, language-agnostic AP course covering the big ideas of computing — algorithms, data, the internet, and computing's impact — built around creating projects rather than mastering one language.</p>
+          <p class="course-note">This was my first ever coding class. It used Scratch, a block-coding website, to make projects.</p>
+          <p class="course-impact"><span class="impact-label">Impact:</span>Opened the door to computer science as a career path and showed that programming could be creative, not just technical.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<script>
+  function goBack() {
+    if (window.parent && window.parent.__gbGoBack) window.parent.__gbGoBack();
+  }
+  document.getElementById('backBtn').addEventListener('click', goBack);
+  document.addEventListener('keydown', function (e) {
+    var k = e.key.toLowerCase();
+    if (k === 'escape' || k === 'backspace' || k === 'b') goBack();
+  });
+</script>
+</body>
+</html>

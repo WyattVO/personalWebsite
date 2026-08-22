@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Extracurriculars</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    background: #c3d179;
+    font-family: system-ui, -apple-system, sans-serif;
+    color: #2f3a1a;
+  }
+  body { padding-bottom: 40px; }
+
+  .page-header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+    background: #c3d179;
+    border-bottom: 2px solid #2f3a1a;
+  }
+  .page-header h1 { margin: 0; font-size: 22px; letter-spacing: 0.5px; }
+  button#backBtn {
+    font: inherit;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid #2f3a1a;
+    background: transparent;
+    color: #2f3a1a;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  button#backBtn:hover { background: #2f3a1a; color: #c3d179; }
+
+  main { max-width: 760px; margin: 0 auto; padding: 8px 20px 20px; }
+  .intro { opacity: 0.8; font-size: 14px; line-height: 1.5; margin: 12px 0 28px; }
+
+  .section-heading {
+    margin: 0 0 14px;
+    font-size: 18px;
+    border-bottom: 1px dashed #2f3a1a;
+    padding-bottom: 6px;
+  }
+  section.group { margin-bottom: 34px; }
+
+  .activity-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .activity-card {
+    display: flex;
+    gap: 14px;
+    background: #d9e29a;
+    border: 1px solid #2f3a1a;
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .activity-img-wrap {
+    flex: 0 0 56px;
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    background: #eef2d9;
+    border: 1px solid rgba(47,58,26,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .activity-img-wrap img { max-width: 78%; max-height: 78%; object-fit: contain; }
+  .activity-body { flex: 1; min-width: 0; }
+  .activity-title-row {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .activity-title { margin: 0; font-size: 16px; }
+  .activity-badge {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    background: #2f3a1a;
+    color: #c3d179;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .activity-desc { margin: 0 0 6px; font-size: 13.5px; line-height: 1.5; }
+  .activity-impact {
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 1.45;
+    background: rgba(138, 154, 72, 0.3);
+    border-radius: 6px;
+    padding: 7px 9px;
+  }
+  .impact-label {
+    display: inline-block;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 10.5px;
+    letter-spacing: 0.6px;
+    margin-right: 5px;
+  }
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>Extracurriculars</h1>
+  <button id="backBtn">&larr; Back (B / Esc)</button>
+</div>
+
+<main>
+  <p class="intro">
+    Clubs, competitions, and other involvement outside the classroom at Texas A&amp;M.
+  </p>
+
+  <section class="group">
+    <h2 class="section-heading">Involvement</h2>
+    <div class="activity-grid">
+
+      <article class="activity-card">
+        <div class="activity-img-wrap"><img src="images/extracurriculars/laptop-code.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="activity-body">
+          <div class="activity-title-row">
+            <h3 class="activity-title">Aggie Coding Club</h3>
+            <span class="activity-badge">August 2024 &ndash; Present</span>
+          </div>
+          <p class="activity-desc">A student club for writing code and building projects outside of any class requirement, through casual meetups, workshops, and challenges.</p>
+          <p class="activity-impact"><span class="impact-label">Impact:</span>A place to code for the fun of it instead of a grade — kept me sharp on skills that don't always come up in coursework and connected me with other students who like to build things.</p>
+        </div>
+      </article>
+
+      <article class="activity-card">
+        <div class="activity-img-wrap"><img src="images/extracurriculars/circuit-bolt.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="activity-body">
+          <div class="activity-title-row">
+            <h3 class="activity-title">IEEE</h3>
+            <span class="activity-badge">August 2025 &ndash; Present</span>
+          </div>
+          <p class="activity-desc">The student branch of the Institute of Electrical and Electronics Engineers — talks, industry connections, and professional development for electrical and computer engineers.</p>
+          <p class="activity-impact"><span class="impact-label">Impact:</span>A more professional, industry-facing counterpart to my coursework — a way to see where the ECE degree actually leads and to network with people already working in the field.</p>
+        </div>
+      </article>
+
+      <article class="activity-card">
+        <div class="activity-img-wrap"><img src="images/extracurriculars/trophy-data.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="activity-body">
+          <div class="activity-title-row">
+            <h3 class="activity-title">TAMU Datathon</h3>
+            <span class="activity-badge">April 2024 &ndash; Present</span>
+          </div>
+          <p class="activity-desc">A recurring campus hackathon/datathon I've kept coming back to as a competitor, most recently taking 1st place in its submission category with the Solana MCP Server.</p>
+          <p class="activity-impact"><span class="impact-label">Impact:</span>Repeated exposure to building something real under a hard deadline — the event that's produced some of the projects I'm most proud of, including a 1st-place finish.</p>
+        </div>
+      </article>
+
+      <article class="activity-card">
+        <div class="activity-img-wrap"><img src="images/extracurriculars/pickleball.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="activity-body">
+          <div class="activity-title-row">
+            <h3 class="activity-title">Pickleball Club</h3>
+            <span class="activity-badge">August 2024 &ndash; Present</span>
+          </div>
+          <p class="activity-desc">A casual, social sports club for playing pickleball on a regular basis with other students.</p>
+          <p class="activity-impact"><span class="impact-label">Impact:</span>A reliable way to step away from screens and coursework, stay active, and build friendships that have nothing to do with engineering.</p>
+        </div>
+      </article>
+
+      <article class="activity-card">
+        <div class="activity-img-wrap"><img src="images/extracurriculars/helping-hands.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="activity-body">
+          <div class="activity-title-row">
+            <h3 class="activity-title">The Big Event</h3>
+            <span class="activity-badge">September 2024</span>
+          </div>
+          <p class="activity-desc">Texas A&amp;M's student-run day of community service, where thousands of Aggies volunteer around Bryan/College Station to say "thank you" to the local community.</p>
+          <p class="activity-impact"><span class="impact-label">Impact:</span>A grounding reminder that the university sits inside a real community — a day of manual work for someone else's benefit instead of my own résumé.</p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="group">
+    <h2 class="section-heading">Interests</h2>
+    <div class="activity-grid">
+
+      <article class="activity-card">
+        <div class="activity-img-wrap"><img src="images/extracurriculars/retro-console.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="activity-body">
+          <div class="activity-title-row">
+            <h3 class="activity-title">Hardware Restoration for Retro Consoles</h3>
+          </div>
+          <p class="activity-desc">Repairing and restoring old game consoles and handhelds — recapping boards, cleaning contacts, replacing shells and screens, and diagnosing dead units.</p>
+          <p class="activity-impact"><span class="impact-label">Impact:</span>Hands-on soldering and hardware debugging that directly reinforces what I study in my ECE classes — and honestly, the whole reason this site is styled like a Game Boy.</p>
+        </div>
+      </article>
+
+      <article class="activity-card">
+        <div class="activity-img-wrap"><img src="images/extracurriculars/pc-tower.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="activity-body">
+          <div class="activity-title-row">
+            <h3 class="activity-title">Computer Building</h3>
+          </div>
+          <p class="activity-desc">Planning, sourcing parts for, and building PCs from scratch — balancing budget, compatibility, and performance.</p>
+          <p class="activity-impact"><span class="impact-label">Impact:</span>Built an intuitive, practical understanding of how the components in a computer architecture course actually come together into a working machine.</p>
+        </div>
+      </article>
+
+      <article class="activity-card">
+        <div class="activity-img-wrap"><img src="images/extracurriculars/dice.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="activity-body">
+          <div class="activity-title-row">
+            <h3 class="activity-title">Board Games</h3>
+          </div>
+          <p class="activity-desc">Playing strategy and tabletop games with friends, from quick card games to longer, more involved board games.</p>
+          <p class="activity-impact"><span class="impact-label">Impact:</span>A low-stakes way to practice strategic thinking and planning ahead, and a reliable excuse to get friends in the same room.</p>
+        </div>
+      </article>
+
+      <article class="activity-card">
+        <div class="activity-img-wrap"><img src="images/extracurriculars/dumbbell.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="activity-body">
+          <div class="activity-title-row">
+            <h3 class="activity-title">Gym</h3>
+          </div>
+          <p class="activity-desc">Regular strength training and exercise.</p>
+          <p class="activity-impact"><span class="impact-label">Impact:</span>Gives structure to the week and an outlet for stress — the discipline of showing up consistently carries over directly into how I handle coursework and deadlines.</p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+</main>
+
+<script>
+  function goBack() {
+    if (window.parent && window.parent.__gbGoBack) window.parent.__gbGoBack();
+  }
+  document.getElementById('backBtn').addEventListener('click', goBack);
+  document.addEventListener('keydown', function (e) {
+    var k = e.key.toLowerCase();
+    if (k === 'escape' || k === 'backspace' || k === 'b') goBack();
+  });
+</script>
+</body>
+</html>

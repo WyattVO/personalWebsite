@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Projects</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    background: #c3d179;
+    font-family: system-ui, -apple-system, sans-serif;
+    color: #2f3a1a;
+  }
+  body { padding-bottom: 40px; }
+
+  .page-header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+    background: #c3d179;
+    border-bottom: 2px solid #2f3a1a;
+  }
+  .page-header h1 { margin: 0; font-size: 22px; letter-spacing: 0.5px; }
+  button#backBtn {
+    font: inherit;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid #2f3a1a;
+    background: transparent;
+    color: #2f3a1a;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  button#backBtn:hover { background: #2f3a1a; color: #c3d179; }
+
+  main { max-width: 760px; margin: 0 auto; padding: 8px 20px 20px; }
+  .intro { opacity: 0.8; font-size: 14px; line-height: 1.5; margin: 12px 0 28px; }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .project-card {
+    display: flex;
+    gap: 14px;
+    background: #d9e29a;
+    border: 1px solid #2f3a1a;
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .project-img-wrap {
+    flex: 0 0 60px;
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    background: #eef2d9;
+    border: 1px solid rgba(47,58,26,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .project-img-wrap img { max-width: 78%; max-height: 78%; object-fit: contain; }
+  .project-body { flex: 1; min-width: 0; }
+  .project-title-row {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .project-title { margin: 0; font-size: 17px; }
+  .project-badge {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    background: #2f3a1a;
+    color: #c3d179;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .project-tags { margin: 0 0 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .project-tag {
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(47,58,26,0.12);
+    border: 1px solid rgba(47,58,26,0.3);
+    border-radius: 999px;
+    padding: 2px 9px;
+  }
+  .project-desc { margin: 0 0 6px; font-size: 13.5px; line-height: 1.5; }
+  .project-note {
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 1.45;
+    font-style: italic;
+    opacity: 0.85;
+    border-left: 2px solid #2f3a1a;
+    padding-left: 8px;
+  }
+  .project-link {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #2f3a1a;
+  }
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>Projects</h1>
+  <button id="backBtn">&larr; Back (B / Esc)</button>
+</div>
+
+<main>
+  <p class="intro">
+    Hackathons, class projects, and self-directed learning — roughly newest first.
+  </p>
+
+  <div class="project-grid">
+
+    <article class="project-card">
+      <div class="project-img-wrap"><img src="images/projects/router-network.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+      <div class="project-body">
+        <div class="project-title-row">
+          <h3 class="project-title">OpenRouter + Claude Code Setup</h3>
+        </div>
+        <div class="project-tags">
+          <span class="project-tag">Claude Code</span>
+          <span class="project-tag">OpenRouter</span>
+          <span class="project-tag">LLM APIs</span>
+        </div>
+        <p class="project-desc">Set up OpenRouter — a unified API that routes requests to dozens of different language models — to work alongside Claude Code, so I can pull in whichever model fits a given task from inside the same workflow I already use for coding. A personal, ongoing project in API key management, model routing, and comparing how different models perform on the same problem.</p>
+      </div>
+    </article>
+
+    <article class="project-card">
+      <div class="project-img-wrap"><img src="images/projects/shield-lock.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+      <div class="project-body">
+        <div class="project-title-row">
+          <h3 class="project-title">Cybersecurity Fundamentals — CompTIA Security+</h3>
+          <span class="project-badge">IBM Internship</span>
+        </div>
+        <div class="project-tags">
+          <span class="project-tag">Cybersecurity</span>
+          <span class="project-tag">CompTIA Security+</span>
+          <span class="project-tag">Self-Study</span>
+        </div>
+        <p class="project-desc">Studying for the CompTIA Security+ certification on my own time during my internship at IBM — network security, threats and vulnerabilities, identity and access management, and security operations. Being around real security practices day to day pushed me to build an actual foundation in cybersecurity instead of picking it up passively.</p>
+      </div>
+    </article>
+
+    <article class="project-card">
+      <div class="project-img-wrap"><img src="images/projects/blockchain-coin.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+      <div class="project-body">
+        <div class="project-title-row">
+          <h3 class="project-title">Solana MCP Server</h3>
+          <span class="project-badge">1st Place — TAMU Datathon</span>
+        </div>
+        <div class="project-tags">
+          <span class="project-tag">Solana API</span>
+          <span class="project-tag">MCP</span>
+          <span class="project-tag">Claude Code</span>
+        </div>
+        <p class="project-desc">Built an MCP server interfacing with Solana's API to let Claude query and interact with the Solana blockchain, with a concise design put together in Claude Code. Won 1st place in its submission category at the TAMU Datathon.</p>
+        <p class="project-note">An all-night project — my group and I were thrilled it won, and it applied what we'd learned in 48 hours to something actually presentable to judges.</p>
+      </div>
+    </article>
+
+    <article class="project-card">
+      <div class="project-img-wrap"><img src="images/projects/shopping-cart.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+      <div class="project-body">
+        <div class="project-title-row">
+          <h3 class="project-title">Innovative Shopping Cart</h3>
+          <span class="project-badge">Presented to Capital One</span>
+        </div>
+        <div class="project-tags">
+          <span class="project-tag">HTML/CSS</span>
+          <span class="project-tag">Machine Learning</span>
+          <span class="project-tag">Web Scraping</span>
+        </div>
+        <p class="project-desc">A web application engineered in 48 hours that used machine learning models and automated web scraping to aggregate grocery price data across stores and power an interactive cart feature that finds the best matches for a shopping list.</p>
+        <p class="project-note">This project could have been more complete — my group left early and I was left to finish and present it solo — but I'm still really proud of how it turned out.</p>
+      </div>
+    </article>
+
+    <article class="project-card">
+      <div class="project-img-wrap"><img src="images/projects/voxel-blocks.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+      <div class="project-body">
+        <div class="project-title-row">
+          <h3 class="project-title">Veloren</h3>
+          <span class="project-badge">Open Source</span>
+        </div>
+        <div class="project-tags">
+          <span class="project-tag">Rust</span>
+          <span class="project-tag">Voxel Engine</span>
+          <span class="project-tag">Open Source</span>
+        </div>
+        <p class="project-desc">Veloren is an open-source, voxel-style game written in Rust. I've been researching how to make a meaningful first contribution — open-source work ties directly into my degree, but it's also something I'd enjoy doing for its own sake, contributing to a project that makes a community more whole.</p>
+        <a class="project-link" href="https://veloren.net/" target="_blank" rel="noopener">veloren.net &rarr;</a>
+      </div>
+    </article>
+
+    <article class="project-card">
+      <div class="project-img-wrap"><img src="images/projects/snake-game.svg" alt="" onerror="this.parentElement.style.display='none'"></div>
+      <div class="project-body">
+        <div class="project-title-row">
+          <h3 class="project-title">Snake Game</h3>
+        </div>
+        <div class="project-tags">
+          <span class="project-tag">Java</span>
+          <span class="project-tag">Greenfoot</span>
+          <span class="project-tag">Team of 3</span>
+        </div>
+        <p class="project-desc">A classic Snake game built in Java using the Greenfoot IDE, with apples that sped up the game as it progressed.</p>
+        <p class="project-note">Sadly the code was lost and never made it to GitHub. This project taught me the importance of teamwork, communicating with teammates, and actually uploading to GitHub for version control and keeping track of a project over time.</p>
+        <a class="project-link" href="https://www.greenfoot.org/" target="_blank" rel="noopener">greenfoot.org &rarr;</a>
+      </div>
+    </article>
+
+  </div>
+</main>
+
+<script>
+  function goBack() {
+    if (window.parent && window.parent.__gbGoBack) window.parent.__gbGoBack();
+  }
+  document.getElementById('backBtn').addEventListener('click', goBack);
+  document.addEventListener('keydown', function (e) {
+    var k = e.key.toLowerCase();
+    if (k === 'escape' || k === 'backspace' || k === 'b') goBack();
+  });
+</script>
+</body>
+</html>
