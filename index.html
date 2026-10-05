@@ -503,7 +503,8 @@
     var arc = document.getElementById('ringArc');
     var num = document.getElementById('ringNum');
     var target = Math.round(pct * 100);
-    setTimeout(function () { arc.style.strokeDashoffset = String(c * (1 - pct)); }, 50);
+    if (reduceMotion) arc.style.transition = 'none';
+    setTimeout(function () { arc.style.strokeDashoffset = String(c * (1 - pct)); }, reduceMotion ? 0 : 50);
     if (reduceMotion) { num.textContent = target + '%'; }
     else {
       var t0 = null;
