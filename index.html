@@ -728,8 +728,16 @@
     tilt.style.setProperty('--ry', baseRY + 'deg');
     tilt.style.setProperty('--rz', baseRZ + 'deg');
   }
-  fit();
-  window.addEventListener('resize', fit);
+  // sizing must land instantly; otherwise the 600ms tilt transition can sit pending
+  // until the first tap restyles the page, and the device visibly shrinks on phones
+  function fitNow() {
+    tilt.style.transition = 'none';
+    fit();
+    void tilt.offsetWidth;
+    tilt.style.transition = '';
+  }
+  fitNow();
+  window.addEventListener('resize', fitNow);
 
   if (!reduceMotion && window.matchMedia('(pointer: fine)').matches) {
     window.addEventListener('pointermove', function (e) {
