@@ -31,7 +31,15 @@
     color: var(--text);
     font-family: 'Sora', system-ui, sans-serif;
   }
-  #fibers { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  #rain { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  /* CRT scanlines + vignette over the rain, keeps the device the brightest thing on screen */
+  .crt {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      repeating-linear-gradient(180deg, rgba(0,0,0,0) 0 2px, rgba(0,0,0,0.14) 2px 3px),
+      radial-gradient(45% 50% at 50% 50%, rgba(10,7,5,0.45) 0%, rgba(10,7,5,0) 70%),
+      radial-gradient(130% 100% at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.75) 100%);
+  }
 
   .corner {
     position: fixed;
@@ -39,6 +47,7 @@
     font-size: 13px;
     color: var(--muted);
     line-height: 1.5;
+    text-shadow: 0 0 6px #000, 0 0 14px #000;
   }
   .corner.tl { top: 24px; left: 28px; }
   .corner.tl strong { display: block; color: var(--text); font-weight: 600; font-size: 15px; letter-spacing: 0.2px; }
@@ -60,12 +69,15 @@
     inset: 0;
     display: grid;
     place-items: center;
-    perspective: 1600px;
+    perspective: 1300px;
     z-index: 1;
   }
+  /* held like a book: upright, swung on its vertical axis so the right edge comes toward you
+     and the shell's thickness shows down that side */
   .tilt {
+    position: relative;
     transform-style: preserve-3d;
-    transform: scale(var(--s, 1)) rotateY(var(--ry, -16deg)) rotateX(var(--rx, 5deg)) rotateZ(-1.5deg);
+    transform: scale(var(--s, 1)) rotateY(var(--ry, -20deg)) rotateX(var(--rx, 4deg)) rotateZ(var(--rz, -1deg));
     transition: transform 600ms cubic-bezier(.2,.7,.2,1), opacity 400ms ease;
   }
 
@@ -75,18 +87,28 @@
     width: 360px;
     height: 600px;
     border-radius: 22px 22px 78px 22px;
+    transform-style: preserve-3d;
     background:
       repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, rgba(0,0,0,0.04) 1px 3px),
       linear-gradient(150deg, #fbf0d2 0%, #d8bf8c 28%, #b39561 55%, #cfb380 78%, #8f7448 100%);
     box-shadow:
       inset 0 1px 0 rgba(255,255,255,0.85),
       inset 1px 0 0 rgba(255,255,255,0.5),
-      inset 0 -3px 6px rgba(70,50,20,0.35),
-      1px 1px 0 #b09160, 2px 2px 0 #a6875a, 3px 3px 0 #9b7e52, 4px 4px 0 #91744b,
-      5px 5px 0 #866a43, 6px 6px 0 #7b613c, 7px 7px 0 #6f5735, 8px 8px 0 #5f4a2d,
-      40px 50px 80px rgba(0,0,0,0.65),
-      0 0 120px rgba(243,181,68,0.10);
+      inset 0 -3px 6px rgba(70,50,20,0.35);
   }
+  /* real extrusion: stacked copies of the shell behind the face, built in JS */
+  .slab {
+    position: absolute; left: 0; top: 0;
+    width: 360px; height: 600px;
+    border-radius: 22px 22px 78px 22px;
+    pointer-events: none;
+  }
+  .slab.floor {
+    box-shadow: 0 0 60px 10px rgba(0,0,0,0.85), 0 0 160px rgba(243,181,68,0.18);
+  }
+  /* controls float a few px off the shell so they parallax against it */
+  .device .dpad, .device .ab, .device .pills { transform: translateZ(7px); }
+  .device .bezel { transform: translateZ(1px); }
 
   .power {
     position: absolute; top: 14px; left: 24px;
@@ -345,7 +367,8 @@
 </style>
 </head>
 <body>
-<canvas id="fibers" aria-hidden="true"></canvas>
+<canvas id="rain" aria-hidden="true"></canvas>
+<div class="crt" aria-hidden="true"></div>
 
 <div class="corner tl">
   <strong>Wyatt Voigt</strong>
@@ -676,15 +699,34 @@
     confirmSelection();
   });
 
+  // ---------- shell extrusion ----------
+  (function buildSlabs() {
+    var device = document.getElementById('device');
+    var depth = 30, step = 2;
+    var c0 = [222, 199, 150], c1 = [128, 102, 62]; // lit edge -> shadowed back
+    for (var z = step; z <= depth; z += step) {
+      var k = z / depth;
+      var el = document.createElement('div');
+      el.className = 'slab' + (z === depth ? ' floor' : '');
+      el.style.transform = 'translateZ(' + (-z) + 'px)';
+      el.style.background = 'rgb(' + c0.map(function (v, i) { return Math.round(v + (c1[i] - v) * k); }).join(',') + ')';
+      tilt.insertBefore(el, device);
+    }
+  })();
+
   // ---------- fit + pointer tilt ----------
-  var baseRY = -16, baseRX = 5;
+  var baseRX = 4, baseRY = -20, baseRZ = -1;
   function fit() {
     var w = window.innerWidth, h = window.innerHeight;
-    var s = Math.min(1.15, (h - 90) / 640, (w - 32) / 400);
+    var narrow = w < 640;
+    // the near (right) edge grows under perspective, so leave a little extra headroom
+    var s = Math.min(1.5, (h - 100) / 640, (w - 24) / 390);
     tilt.style.setProperty('--s', Math.max(0.5, s).toFixed(3));
-    if (w < 640) { baseRY = -8; baseRX = 3; } else { baseRY = -16; baseRX = 5; }
-    tilt.style.setProperty('--ry', baseRY + 'deg');
+    // phones get a gentler swing so the screen stays readable
+    if (narrow) { baseRX = 3; baseRY = -12; baseRZ = -1; } else { baseRX = 4; baseRY = -20; baseRZ = -1; }
     tilt.style.setProperty('--rx', baseRX + 'deg');
+    tilt.style.setProperty('--ry', baseRY + 'deg');
+    tilt.style.setProperty('--rz', baseRZ + 'deg');
   }
   fit();
   window.addEventListener('resize', fit);
@@ -694,35 +736,37 @@
       if (currentView === 'detail') return;
       var nx = e.clientX / window.innerWidth - 0.5;
       var ny = e.clientY / window.innerHeight - 0.5;
-      tilt.style.setProperty('--ry', (baseRY + nx * 10).toFixed(2) + 'deg');
-      tilt.style.setProperty('--rx', (baseRX - ny * 8).toFixed(2) + 'deg');
+      tilt.style.setProperty('--ry', (baseRY + nx * 8).toFixed(2) + 'deg');
+      tilt.style.setProperty('--rx', (baseRX - ny * 6).toFixed(2) + 'deg');
     });
   }
 
   renderMenu();
 })();
 
-// ---------- fiber-optic background ----------
+// ---------- gold digital rain background ----------
 (function () {
-  var cv = document.getElementById('fibers');
+  var cv = document.getElementById('rain');
   var ctx = cv.getContext('2d');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var W, H, dpr, strands = [], sparks = [], bokeh = [];
+  var BG = '#0a0705';
+  var TICK = 1000 / 30;           // fixed simulation step so speed doesn't depend on refresh rate
+  var FADE = 'rgba(10,7,5,0.055)'; // how fast trails dissolve
+  // mostly bits, with a sprinkle of hex and half-width katakana for the Matrix feel
+  var BITS = '0101010101010101';
+  var EXTRA = '0123456789ABCDEFｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ';
+  // two depth layers: far columns are small, dim and slow; near ones are big and bright
+  var LAYERS = [
+    { size: 11, gap: 1.0, speed: [7, 13],  body: 'rgba(170,136,82,0.9)',  head: 'rgba(205,176,122,0.9)', glow: 0 },
+    { size: 17, gap: 1.25, speed: [12, 22], body: 'rgba(243,181,68,1)',  head: '#fff2d6',              glow: 10 }
+  ];
+  var W, H, dpr, cols = [], acc = 0, last = 0;
 
-  // pre-rendered glow sprite, cheaper than shadowBlur per particle
-  var glow = document.createElement('canvas');
-  glow.width = glow.height = 64;
-  (function () {
-    var g = glow.getContext('2d');
-    var grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
-    grd.addColorStop(0, 'rgba(255,236,190,1)');
-    grd.addColorStop(0.18, 'rgba(255,196,90,0.9)');
-    grd.addColorStop(0.45, 'rgba(243,160,50,0.25)');
-    grd.addColorStop(1, 'rgba(243,160,50,0)');
-    g.fillStyle = grd;
-    g.fillRect(0, 0, 64, 64);
-  })();
-
+  function glyph() {
+    return Math.random() < 0.78
+      ? BITS[(Math.random() * BITS.length) | 0]
+      : EXTRA[(Math.random() * EXTRA.length) | 0];
+  }
   function rand(a, b) { return a + Math.random() * (b - a); }
 
   function build() {
@@ -730,102 +774,100 @@
     W = window.innerWidth; H = window.innerHeight;
     cv.width = W * dpr; cv.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.fillStyle = BG;
+    ctx.fillRect(0, 0, W, H);
+    ctx.textBaseline = 'top';
 
-    strands = [];
-    var count = W < 640 ? 48 : 90;
-    for (var i = 0; i < count; i++) {
-      var bundle = i % 2;
-      strands.push({
-        y0: H * (bundle ? 0.2 : 0.75) + rand(-H * 0.12, H * 0.12),
-        y3: H * (bundle ? 0.55 : 0.45) + rand(-H * 0.08, H * 0.08),
-        a1: rand(0.18, 0.32) * H * (bundle ? 1 : -1),
-        a2: rand(0.18, 0.32) * H * (bundle ? -1 : 1),
-        ph: rand(0, Math.PI * 2),
-        sp: rand(0.15, 0.35),
-        w: rand(0.4, 1.1),
-        alpha: rand(0.12, 0.32)
-      });
-    }
-    sparks = [];
-    for (var j = 0; j < (W < 640 ? 26 : 55); j++) {
-      sparks.push({ s: Math.floor(Math.random() * strands.length), t: Math.random(), v: rand(0.0006, 0.0022), r: rand(6, 16) });
-    }
-    bokeh = [];
-    for (var k = 0; k < 9; k++) {
-      var side = Math.random() < 0.5;
-      bokeh.push({ x: side ? rand(0, W * 0.2) : rand(W * 0.8, W), y: rand(H * 0.55, H), r: rand(14, 46), a: rand(0.08, 0.25) });
-    }
+    cols = [];
+    LAYERS.forEach(function (L, li) {
+      var pitch = L.size * L.gap;
+      for (var x = rand(0, pitch); x < W; x += pitch) {
+        cols.push({
+          L: L, li: li, x: x,
+          y: rand(-H, H),               // in px; random start so the screen isn't empty
+          v: rand(L.speed[0], L.speed[1]) * L.size / 30, // cells/sec -> px per tick
+          row: -1, prev: null
+        });
+      }
+    });
   }
 
-  function pts(st, time) {
-    var wob = Math.sin(time * st.sp + st.ph);
-    return [
-      -60, st.y0,
-      W * 0.32, st.y0 + st.a1 + wob * 18,
-      W * 0.68, st.y3 + st.a2 - wob * 18,
-      W + 60, st.y3 + wob * 6
-    ];
-  }
-  function at(p, t) {
-    var u = 1 - t;
-    return [
-      u*u*u*p[0] + 3*u*u*t*p[2] + 3*u*t*t*p[4] + t*t*t*p[6],
-      u*u*u*p[1] + 3*u*u*t*p[3] + 3*u*t*t*p[5] + t*t*t*p[7]
-    ];
+  function step() {
+    // dissolve everything a little
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = FADE;
+    ctx.fillRect(0, 0, W, H);
+
+    for (var i = 0; i < cols.length; i++) {
+      var c = cols[i], L = c.L;
+      c.y += c.v;
+      var row = Math.floor(c.y / L.size);
+      if (row === c.row) continue;
+      ctx.font = (L.li ? '600 ' : '400 ') + L.size + 'px "JetBrains Mono", ui-monospace, Consolas, monospace';
+
+      // the old head cools down to the trail color
+      if (c.prev) {
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = BG;
+        ctx.fillRect(c.x - 1, c.prev.y - 1, L.size + 2, L.size + 2);
+        ctx.fillStyle = L.body;
+        ctx.fillText(c.prev.ch, c.x, c.prev.y);
+      }
+      // new white-gold head
+      var ch = glyph(), y = row * L.size;
+      ctx.fillStyle = L.head;
+      ctx.shadowColor = 'rgba(243,181,68,0.9)';
+      ctx.shadowBlur = L.glow;
+      ctx.fillText(ch, c.x, y);
+      c.prev = { ch: ch, y: y };
+      c.row = row;
+
+      // a glitchy re-roll somewhere up the trail now and then
+      if (L.li && Math.random() < 0.04) {
+        var gy = y - L.size * ((2 + Math.random() * 10) | 0);
+        if (gy > 0) {
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = BG;
+          ctx.fillRect(c.x - 1, gy - 1, L.size + 2, L.size + 2);
+          ctx.fillStyle = 'rgba(205,176,122,0.6)';
+          ctx.fillText(glyph(), c.x, gy);
+        }
+      }
+
+      if (y > H && Math.random() < 0.035) {
+        c.y = rand(-H * 0.5, 0);
+        c.v = rand(L.speed[0], L.speed[1]) * L.size / 30;
+        c.prev = null; c.row = -1;
+      }
+    }
+    ctx.shadowBlur = 0;
   }
 
   function frame(ms) {
-    var time = ms / 1000;
-    var bg = ctx.createRadialGradient(W * 0.5, H * 0.45, 0, W * 0.5, H * 0.5, Math.max(W, H) * 0.75);
-    bg.addColorStop(0, '#2b2017');
-    bg.addColorStop(0.55, '#161009');
-    bg.addColorStop(1, '#0a0705');
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, W, H);
-
-    var warm = ctx.createRadialGradient(0, H, 0, 0, H, W * 0.5);
-    warm.addColorStop(0, 'rgba(214,140,90,0.28)');
-    warm.addColorStop(1, 'rgba(214,140,90,0)');
-    ctx.fillStyle = warm;
-    ctx.fillRect(0, 0, W, H);
-
-    var cache = new Array(strands.length);
-    ctx.lineCap = 'round';
-    for (var i = 0; i < strands.length; i++) {
-      var st = strands[i], p = pts(st, time);
-      cache[i] = p;
-      ctx.beginPath();
-      ctx.moveTo(p[0], p[1]);
-      ctx.bezierCurveTo(p[2], p[3], p[4], p[5], p[6], p[7]);
-      ctx.strokeStyle = 'rgba(236,214,170,' + st.alpha + ')';
-      ctx.lineWidth = st.w;
-      ctx.stroke();
-    }
-
-    ctx.globalCompositeOperation = 'lighter';
-    for (var k = 0; k < bokeh.length; k++) {
-      var b = bokeh[k];
-      ctx.globalAlpha = b.a;
-      ctx.drawImage(glow, b.x - b.r * 2, b.y - b.r * 2, b.r * 4, b.r * 4);
-    }
-    for (var j = 0; j < sparks.length; j++) {
-      var s = sparks[j];
-      if (!reduceMotion) { s.t += s.v; if (s.t > 1) { s.t = 0; s.s = Math.floor(Math.random() * strands.length); } }
-      var q = at(cache[s.s], s.t);
-      var fade = Math.sin(s.t * Math.PI);
-      ctx.globalAlpha = 0.9 * fade;
-      ctx.drawImage(glow, q[0] - s.r, q[1] - s.r, s.r * 2, s.r * 2);
-    }
-    ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = 'source-over';
-
-    if (!reduceMotion && !document.hidden) requestAnimationFrame(frame);
+    if (!last) last = ms;
+    acc += Math.min(250, ms - last);
+    last = ms;
+    while (acc >= TICK) { step(); acc -= TICK; }
+    if (!document.hidden) requestAnimationFrame(frame);
   }
 
-  build();
-  window.addEventListener('resize', function () { build(); if (reduceMotion) frame(0); });
-  document.addEventListener('visibilitychange', function () { if (!document.hidden && !reduceMotion) requestAnimationFrame(frame); });
-  requestAnimationFrame(frame);
+  function still() {
+    // reduced motion: settle the simulation into a single frozen frame
+    build();
+    for (var n = 0; n < 160; n++) step();
+  }
+
+  if (reduceMotion) {
+    still();
+    window.addEventListener('resize', still);
+  } else {
+    build();
+    window.addEventListener('resize', build);
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) { last = 0; requestAnimationFrame(frame); }
+    });
+    requestAnimationFrame(frame);
+  }
 })();
 </script>
 </body>

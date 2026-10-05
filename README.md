@@ -68,10 +68,10 @@ The first version was a flat, green-screen SVG Game Boy. This version keeps ever
 it fun (the console, the menu and the D-pad) and rebuilds how it looks and works:
 
 - **The device** is built in HTML and CSS instead of one big SVG. It has a brushed-metal finish,
-  a layered edge for depth, a 3D tilt that follows your mouse, the classic twin stripe above the
-  screen, a speaker grille and a glowing port on the side.
-- **The background** is a `<canvas>` of fiber-optic strands that sway slowly, with light pulses
-  traveling along them.
+  a real 3D shell edge, a three-quarter turn (like a book held in your hand) that follows your
+  mouse, the classic twin stripe above the screen, a speaker grille and a glowing port on the side.
+- **The background** is a `<canvas>` of gold Matrix-style digital rain: falling columns of bits,
+  hex and katakana in two depth layers, under faint CRT scanlines.
 - **The section pages** share one stylesheet, [`detail.css`](detail.css), with a dark-and-gold
   theme. Classes are shown on a timeline because the semesters really are a sequence.
 - **The icons** are one hand-drawn set: 41 SVGs in the same gold line style, replacing a mix of
