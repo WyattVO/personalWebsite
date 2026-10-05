@@ -1,8 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <g stroke="#2f3a1a" stroke-width="3" stroke-linecap="round">
-    <line x1="14" y1="86" x2="14" y2="12"/>
-    <line x1="14" y1="86" x2="92" y2="86"/>
-  </g>
-  <path d="M16 80 C 40 78, 55 60, 62 40 C 68 24, 78 16, 90 14" fill="none" stroke="#2f3a1a" stroke-width="4" stroke-linecap="round"/>
-  <path d="M16 80 L 90 80" fill="none" stroke="#2f3a1a" stroke-width="2" stroke-dasharray="3,4" opacity="0.5"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="#ead7ab" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7v32h32"/><path d="M13 35h26" opacity=".4"/><path d="M13 35c10-2 18-8 26-14" opacity=".7"/><path d="M13 35c9 0 16-5 24-25" stroke="#f3b544"/></svg>

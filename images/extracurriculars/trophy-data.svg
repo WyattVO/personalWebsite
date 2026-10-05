@@ -1,10 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <path d="M36 18 H64 V40 A14 14 0 0 1 36 40 Z" fill="#8a9a48" stroke="#2f3a1a" stroke-width="3" stroke-linejoin="round"/>
-  <path d="M36 22 H22 A4 4 0 0 0 22 34 H36" fill="none" stroke="#2f3a1a" stroke-width="3" stroke-linecap="round"/>
-  <path d="M64 22 H78 A4 4 0 0 1 78 34 H64" fill="none" stroke="#2f3a1a" stroke-width="3" stroke-linecap="round"/>
-  <rect x="46" y="48" width="8" height="12" fill="#2f3a1a"/>
-  <path d="M32 82 H68 L64 62 H36 Z" fill="#c3d179" stroke="#2f3a1a" stroke-width="3" stroke-linejoin="round"/>
-  <rect x="40" y="70" width="6" height="8" fill="#2f3a1a"/>
-  <rect x="50" y="66" width="6" height="12" fill="#2f3a1a"/>
-  <rect x="60" y="72" width="6" height="6" fill="#2f3a1a"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="#ead7ab" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h18v10a9 9 0 0 1-18 0z"/><path d="M15 10H9v3a6 6 0 0 0 6 6M33 10h6v3a6 6 0 0 1-6 6" opacity=".7"/><path d="M24 26v7M17 41h14M19 41l1.5-8h7l1.5 8"/><path d="M19.5 17l3.5-3.5 2 2 3.5-4" stroke="#f3b544"/></svg>

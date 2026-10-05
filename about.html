@@ -3,103 +3,13 @@
 <head>
 <meta charset="utf-8">
 <title>About</title>
-<style>
-  * { box-sizing: border-box; }
-  html, body {
-    margin: 0;
-    min-height: 100%;
-    background: #c3d179;
-    font-family: system-ui, -apple-system, sans-serif;
-    color: #2f3a1a;
-  }
-  body { padding-bottom: 40px; }
-
-  .page-header {
-    position: sticky;
-    top: 0;
-    z-index: 5;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 14px 20px;
-    background: #c3d179;
-    border-bottom: 2px solid #2f3a1a;
-  }
-  .page-header h1 { margin: 0; font-size: 22px; letter-spacing: 0.5px; }
-  button#backBtn {
-    font: inherit;
-    font-weight: 600;
-    font-size: 13px;
-    padding: 8px 14px;
-    border-radius: 8px;
-    border: 1px solid #2f3a1a;
-    background: transparent;
-    color: #2f3a1a;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-  button#backBtn:hover { background: #2f3a1a; color: #c3d179; }
-
-  main { max-width: 760px; margin: 0 auto; padding: 8px 20px 20px; }
-
-  .about-card {
-    display: flex;
-    align-items: center;
-    gap: 22px;
-    background: #d9e29a;
-    border: 1px solid #2f3a1a;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 20px 0 28px;
-  }
-  .about-photo {
-    flex: 0 0 132px;
-    width: 132px;
-    height: 132px;
-    border-radius: 50%;
-    border: 3px solid #2f3a1a;
-    object-fit: cover;
-    background: #eef2d9;
-  }
-  .about-text p { margin: 0 0 10px; font-size: 14.5px; line-height: 1.55; }
-  .about-text p:last-child { margin-bottom: 0; }
-
-  .links-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 28px;
-  }
-  .pill-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-    text-decoration: none;
-    color: #c3d179;
-    background: #2f3a1a;
-    padding: 8px 14px;
-    border-radius: 999px;
-  }
-  .pill-link:hover { background: #232b13; }
-  .pill-link svg { width: 15px; height: 15px; flex: none; }
-
-  .section-heading {
-    margin: 0 0 14px;
-    font-size: 18px;
-    border-bottom: 1px dashed #2f3a1a;
-    padding-bottom: 6px;
-  }
-  .nav-hint { font-size: 13.5px; line-height: 1.6; opacity: 0.85; }
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="detail.css">
 </head>
 <body>
 <div class="page-header">
   <h1>About</h1>
-  <button id="backBtn">&larr; Back (B / Esc)</button>
+  <button id="backBtn"><span class="b">B</span>Back <kbd class="k">Esc</kbd></button>
 </div>
 
 <main>
@@ -128,7 +38,7 @@
 
   <section>
     <h2 class="section-heading">Navigating this site</h2>
-    <p class="nav-hint">This site is a working Game Boy — use the D-pad (or &uarr;/&darr;) to move the menu selection, A (or Enter) to open a section, and B (or Escape) to come back here.</p>
+    <p class="nav-hint">This site is a working Game Boy. Use the D-pad, <kbd>W</kbd> <kbd>S</kbd> or <kbd>&uarr;</kbd> <kbd>&darr;</kbd> to move through the menu. <kbd>D</kbd>, <kbd>&rarr;</kbd>, <kbd>Enter</kbd> or the A button opens a section, and <kbd>A</kbd>, <kbd>&larr;</kbd>, <kbd>Esc</kbd> or the B button comes back.</p>
   </section>
 </main>
 
@@ -139,7 +49,9 @@
   document.getElementById('backBtn').addEventListener('click', goBack);
   document.addEventListener('keydown', function (e) {
     var k = e.key.toLowerCase();
-    if (k === 'escape' || k === 'backspace' || k === 'b') goBack();
+    if (k === 'escape' || k === 'backspace' || k === 'b' || k === 'a' || k === 'arrowleft') goBack();
+    else if (k === 'w') window.scrollBy({ top: -160, behavior: 'smooth' });
+    else if (k === 's') window.scrollBy({ top: 160, behavior: 'smooth' });
   });
 </script>
 </body>

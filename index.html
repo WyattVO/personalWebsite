@@ -2,263 +2,437 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Wyatt Voigt</title>
+<meta name="description" content="Wyatt Voigt — Computer Engineering at Texas A&M, class of 2027.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --umber: #120d09;
+    --umber-2: #241a12;
+    --gold-hi: #f6e9c8;
+    --gold: #cdb07a;
+    --gold-lo: #8b6f43;
+    --glass: #16130f;
+    --panel: #1f1b16;
+    --line: rgba(240, 223, 184, 0.12);
+    --amber: #f3b544;
+    --text: #efe5d0;
+    --muted: #9b8f7a;
+  }
+  * { box-sizing: border-box; }
   html, body {
     margin: 0;
     height: 100%;
-    background: #f3f2ee;
-    font-family: system-ui, -apple-system, sans-serif;
-  }
-  .stage {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-    box-sizing: border-box;
-  }
-  .menu-row, .btn, .btn-simple, .dpad-hit { cursor: pointer; }
-  .btn-cap { transition: transform 80ms ease-out; transform-box: fill-box; transform-origin: center; }
-  .btn-cap:active { transform: scale(0.92); }
-  .dpad-group:has(.dpad-hit:active) .dpad-inner { transform: scale(0.92); }
-  .dpad-inner { transition: transform 80ms ease-out; }
-  .menu-item-text { transition: opacity 120ms ease-out; }
-  #bootView { animation: bootFlicker 900ms steps(1, end) forwards; }
-  #bootView.boot-hide { animation: none; opacity: 0; transition: opacity 400ms ease-in; pointer-events: none; }
-  #deviceSvg { transition: opacity 400ms ease; }
-  #detailContainer {
-    position: fixed;
-    z-index: 10;
     overflow: hidden;
-    opacity: 0;
-    pointer-events: none;
-    transition: left 500ms ease, top 500ms ease, width 500ms ease, height 500ms ease, opacity 250ms ease;
-    background: #8a9a48;
+    background: var(--umber);
+    color: var(--text);
+    font-family: 'Sora', system-ui, sans-serif;
   }
-  #detailFrame {
-    position: absolute;
+  #fibers { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+
+  .corner {
+    position: fixed;
+    z-index: 2;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .corner.tl { top: 24px; left: 28px; }
+  .corner.tl strong { display: block; color: var(--text); font-weight: 600; font-size: 15px; letter-spacing: 0.2px; }
+  .corner.br { bottom: 22px; right: 28px; text-align: right; }
+  kbd {
+    font-family: inherit;
+    font-size: 11px;
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-bottom-width: 2px;
+    border-radius: 5px;
+    padding: 1px 6px;
+    margin: 0 1px;
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .stage {
+    position: fixed;
     inset: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
+    display: grid;
+    place-items: center;
+    perspective: 1600px;
+    z-index: 1;
   }
-  @keyframes bootFlicker {
-    0%   { opacity: 0; }
-    8%   { opacity: 0.6; }
-    16%  { opacity: 0.05; }
-    24%  { opacity: 0.8; }
-    32%  { opacity: 0.15; }
-    45%  { opacity: 1; }
-    100% { opacity: 1; }
+  .tilt {
+    transform-style: preserve-3d;
+    transform: scale(var(--s, 1)) rotateY(var(--ry, -16deg)) rotateX(var(--rx, 5deg)) rotateZ(-1.5deg);
+    transition: transform 600ms cubic-bezier(.2,.7,.2,1), opacity 400ms ease;
+  }
+
+  /* ---------- the device ---------- */
+  .device {
+    position: relative;
+    width: 360px;
+    height: 600px;
+    border-radius: 22px 22px 78px 22px;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, rgba(0,0,0,0.04) 1px 3px),
+      linear-gradient(150deg, #fbf0d2 0%, #d8bf8c 28%, #b39561 55%, #cfb380 78%, #8f7448 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.85),
+      inset 1px 0 0 rgba(255,255,255,0.5),
+      inset 0 -3px 6px rgba(70,50,20,0.35),
+      1px 1px 0 #b09160, 2px 2px 0 #a6875a, 3px 3px 0 #9b7e52, 4px 4px 0 #91744b,
+      5px 5px 0 #866a43, 6px 6px 0 #7b613c, 7px 7px 0 #6f5735, 8px 8px 0 #5f4a2d,
+      40px 50px 80px rgba(0,0,0,0.65),
+      0 0 120px rgba(243,181,68,0.10);
+  }
+
+  .power {
+    position: absolute; top: 14px; left: 24px;
+    display: flex; align-items: center; gap: 7px;
+    font-size: 8.5px; letter-spacing: 1.2px; color: #5c4729;
+  }
+  .power i {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--amber);
+    box-shadow: 0 0 6px var(--amber), 0 0 14px rgba(243,181,68,0.7);
+  }
+
+  .bezel {
+    position: absolute;
+    top: 34px; left: 22px; right: 22px;
+    height: 284px;
+    border-radius: 16px 16px 40px 16px;
+    background: linear-gradient(180deg, #2a241d, #120f0c);
+    padding: 22px 14px 14px;
+    box-shadow:
+      inset 0 2px 3px rgba(0,0,0,0.8),
+      0 1px 0 rgba(255,255,255,0.6),
+      0 -1px 0 rgba(90,65,30,0.5);
+  }
+  /* the classic twin stripe across the top of the bezel */
+  .bezel::before {
+    content: "";
+    position: absolute; top: 9px; left: 14px; right: 14px; height: 6px;
+    background:
+      linear-gradient(90deg, #8b6f43, #cdb07a) 0 0 / 100% 2px no-repeat,
+      linear-gradient(90deg, #6b3f1a, var(--amber)) 0 4px / 100% 2px no-repeat;
+    opacity: 0.8;
+  }
+  .batt { display: flex; align-items: center; gap: 2px; }
+  .batt i { width: 4px; height: 8px; border-radius: 1px; background: var(--amber); box-shadow: 0 0 4px rgba(243,181,68,0.6); }
+  .batt i:last-child { background: rgba(240,223,184,0.15); box-shadow: none; }
+  .screen {
+    position: relative;
+    height: 100%;
+    border-radius: 10px 10px 30px 10px;
+    background: radial-gradient(120% 80% at 20% 0%, #26211b 0%, var(--glass) 60%);
+    border: 1px solid rgba(205,176,122,0.22);
+    overflow: hidden;
+    padding: 12px 13px 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  .screen::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(115deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0) 32%);
+    pointer-events: none;
+  }
+
+  .scr-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .scr-title { font-size: 17px; font-weight: 600; letter-spacing: 0.1px; line-height: 1.1; }
+  .scr-sub { font-size: 9.5px; color: var(--muted); margin-top: 3px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 9px; color: var(--text);
+    border: 1px solid rgba(243,181,68,0.35);
+    border-radius: 6px;
+    padding: 3px 7px;
+    background: rgba(243,181,68,0.06);
+    white-space: nowrap;
+  }
+  .pill i { width: 5px; height: 5px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 6px var(--amber); animation: pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: 0.35; } }
+
+  .scr-body { flex: 1; display: grid; grid-template-columns: 1fr 104px; gap: 9px; margin-top: 10px; min-height: 0; }
+  .menu {
+    list-style: none; margin: 0; padding: 4px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  .menu li {
+    position: relative;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 11px;
+    height: 20px;
+    padding: 0 8px;
+    border-radius: 5px;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .menu li .ext { font-size: 9px; opacity: 0.6; }
+  .menu li.sel { color: var(--text); background: rgba(243,181,68,0.1); }
+  .menu li.sel::before {
+    content: ""; position: absolute; left: 0; top: 5px; bottom: 5px; width: 2px;
+    background: var(--amber); border-radius: 2px; box-shadow: 0 0 6px var(--amber);
+  }
+
+  .stat {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 8px 7px;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center;
+  }
+  .stat-label { font-size: 8.5px; color: var(--muted); align-self: flex-start; }
+  .ring { position: relative; width: 66px; height: 66px; margin: 6px 0 4px; }
+  .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .ring .num { position: absolute; inset: 0; display: grid; place-items: center; font-size: 15px; font-weight: 600; }
+  .stat-foot { font-size: 8.5px; color: var(--muted); line-height: 1.4; }
+  .stat-foot b { color: var(--text); font-weight: 600; display: block; }
+  .spark { width: 100%; height: 22px; margin-top: 6px; }
+
+  .scr-hint {
+    margin-top: 8px;
+    display: flex; align-items: center; gap: 6px;
+    font-size: 9px; color: var(--muted);
+    border-top: 1px solid var(--line);
+    padding-top: 6px;
+    min-height: 20px;
+  }
+  .scr-hint svg { flex: none; }
+
+  /* boot */
+  .boot {
+    position: absolute; inset: 0; z-index: 3;
+    background: var(--glass);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 5px;
+    animation: flicker 900ms steps(1, end) forwards;
+    cursor: pointer;
+  }
+  .boot.hide { animation: none; opacity: 0; transition: opacity 400ms ease-in; pointer-events: none; }
+  .boot .b1 { font-size: 9px; color: var(--muted); letter-spacing: 0.4px; }
+  .boot .b2 { font-size: 16px; font-weight: 600; }
+  .boot .b3 { font-size: 11px; color: var(--amber); }
+  .boot .bar { width: 120px; height: 2px; background: var(--line); border-radius: 2px; margin-top: 12px; overflow: hidden; }
+  .boot .bar i { display: block; height: 100%; width: 0; background: var(--amber); box-shadow: 0 0 8px var(--amber); animation: load 1.5s ease-out forwards; }
+  @keyframes load { to { width: 100%; } }
+  @keyframes flicker {
+    0% { opacity: 0; } 8% { opacity: 0.6; } 16% { opacity: 0.05; }
+    24% { opacity: 0.8; } 32% { opacity: 0.15; } 45%, 100% { opacity: 1; }
+  }
+  .flash { position: absolute; inset: 0; z-index: 4; background: #fff2d6; opacity: 0; pointer-events: none; }
+
+  /* engraved wordmark */
+  .mark {
+    position: absolute; top: 330px; left: 30px;
+    font-size: 13px; font-weight: 700; font-style: italic; letter-spacing: 0.4px;
+    color: #8f7244;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.65), 0 -1px 0 rgba(70,50,20,0.45);
+  }
+  .mark span { font-weight: 300; }
+
+  /* controls */
+  .dpad { position: absolute; left: 42px; top: 386px; width: 104px; height: 104px; }
+  .dpad .cross {
+    position: absolute; inset: 0;
+    filter: drop-shadow(0 3px 2px rgba(40,25,5,0.55));
+    transition: transform 80ms ease-out;
+  }
+  .dpad .cross::before, .dpad .cross::after {
+    content: ""; position: absolute;
+    background: linear-gradient(145deg, #3a332b, #15120f);
+    border-radius: 6px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+  .dpad .cross::before { left: 35px; width: 34px; top: 0; height: 104px; }
+  .dpad .cross::after { top: 35px; height: 34px; left: 0; width: 104px; }
+  .dpad .hub { position: absolute; left: 44px; top: 44px; width: 16px; height: 16px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #2a241d, #0c0a08); z-index: 1; }
+  .dpad .arrow { position: absolute; z-index: 1; width: 0; height: 0; border: 5px solid transparent; pointer-events: none; }
+  .dpad .arrow.u { left: 47px; top: 8px; border-bottom-color: rgba(243,181,68,0.55); }
+  .dpad .arrow.d { left: 47px; bottom: 8px; border-top-color: rgba(243,181,68,0.55); }
+  .dpad .arrow.l { top: 47px; left: 8px; border-right-color: rgba(240,223,184,0.2); }
+  .dpad .arrow.r { top: 47px; right: 8px; border-left-color: rgba(240,223,184,0.2); }
+  .dpad button { position: absolute; left: 35px; width: 34px; height: 36px; z-index: 2; }
+  .dpad button.up { top: 0; }
+  .dpad button.down { bottom: 0; }
+  .dpad button.left, .dpad button.right { top: 35px; width: 36px; height: 34px; }
+  .dpad button.left { left: 0; }
+  .dpad button.right { left: auto; right: 0; }
+  .dpad .arrow.l { border-right-color: rgba(243,181,68,0.55); }
+  .dpad .arrow.r { border-left-color: rgba(243,181,68,0.55); }
+  .dpad.press-up .cross { transform: perspective(200px) rotateX(10deg); }
+  .dpad.press-down .cross { transform: perspective(200px) rotateX(-10deg); }
+  .dpad.press-left .cross { transform: perspective(200px) rotateY(-10deg); }
+  .dpad.press-right .cross { transform: perspective(200px) rotateY(10deg); }
+
+  button.hit {
+    background: transparent; border: 0; padding: 0; margin: 0;
+    cursor: pointer; color: inherit; font: inherit;
+    -webkit-tap-highlight-color: transparent;
+  }
+  button.hit:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 50%; }
+
+  .ab { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 7px; }
+  .ab.b { left: 214px; top: 436px; }
+  .ab.a { left: 278px; top: 398px; }
+  .cap {
+    width: 50px; height: 50px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: radial-gradient(circle at 35% 30%, #3d352c 0%, #1b1712 60%, #0f0c0a 100%);
+    box-shadow:
+      0 0 0 3px #a98c5c,
+      0 0 0 4px rgba(255,255,255,0.45),
+      0 4px 6px rgba(40,25,5,0.6),
+      inset 0 1px 0 rgba(255,255,255,0.15);
+    color: var(--amber);
+    font-size: 15px; font-weight: 600;
+    text-shadow: 0 0 8px rgba(243,181,68,0.7);
+    transition: transform 80ms ease-out, box-shadow 80ms ease-out;
+  }
+  .hit:active .cap { transform: translateY(2px) scale(0.96); }
+  .ab .lbl, .pills .lbl { font-size: 8.5px; letter-spacing: 1px; color: #6f5735; }
+
+  .pills { position: absolute; top: 516px; left: 0; right: 0; display: flex; justify-content: center; gap: 30px; transform: translateX(-12px); }
+  .pills .p { display: flex; flex-direction: column; align-items: center; gap: 6px; transform: rotate(-24deg); }
+  .pills .bar {
+    width: 46px; height: 11px; border-radius: 6px;
+    background: linear-gradient(180deg, #3a332b, #15120f);
+    box-shadow: 0 2px 2px rgba(40,25,5,0.5), 0 0 0 1px rgba(255,255,255,0.3);
+    transition: transform 80ms ease-out;
+  }
+  .hit:active .bar { transform: translateY(1px); }
+
+  .vents { position: absolute; right: 30px; bottom: 34px; display: flex; gap: 7px; transform: rotate(-28deg); }
+  .vents i {
+    width: 6px; height: 50px; border-radius: 3px;
+    background: linear-gradient(180deg, #3a2a14, #1a120a);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.8), 0 1px 0 rgba(255,255,255,0.5);
+  }
+  .vents i:nth-child(2), .vents i:nth-child(4) {
+    background: linear-gradient(180deg, #5a3d10, #2a1a08);
+    box-shadow: inset 0 0 6px rgba(243,181,68,0.5), 0 1px 0 rgba(255,255,255,0.5);
+  }
+
+  .port { position: absolute; right: -4px; top: 170px; width: 6px; height: 120px; border-radius: 3px;
+    background: repeating-linear-gradient(180deg, #2a1d0e 0 10px, var(--amber) 10px 14px);
+    box-shadow: 0 0 14px rgba(243,181,68,0.55); opacity: 0.85; }
+
+  /* detail overlay */
+  #detailContainer {
+    position: fixed; z-index: 10; overflow: hidden;
+    opacity: 0; pointer-events: none;
+    transition: left 500ms ease, top 500ms ease, width 500ms ease, height 500ms ease, opacity 250ms ease, border-radius 500ms ease;
+    background: var(--umber);
+    border-radius: 10px;
+  }
+  #detailFrame { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+  @media (max-width: 640px) {
+    .corner.br { display: none; }
+    .corner.tl { top: 16px; left: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tilt, #detailContainer { transition: none !important; }
+    .boot, .pill i, .boot .bar i { animation: none !important; }
+    .boot .bar i { width: 100%; }
   }
 </style>
 </head>
 <body>
-<div class="stage">
-  <svg id="deviceSvg" viewBox="0 0 520 760" width="438" height="640" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#ecebe3"/>
-        <stop offset="100%" stop-color="#c7c6bb"/>
-      </linearGradient>
-      <radialGradient id="sheenGrad" cx="50%" cy="16%" r="55%">
-        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55"/>
-        <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="edgeShade" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stop-color="#000000" stop-opacity="0.16"/>
-        <stop offset="12%" stop-color="#000000" stop-opacity="0"/>
-        <stop offset="88%" stop-color="#000000" stop-opacity="0"/>
-        <stop offset="100%" stop-color="#000000" stop-opacity="0.16"/>
-      </linearGradient>
-      <linearGradient id="bezelGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#605c6a"/>
-        <stop offset="100%" stop-color="#413e4a"/>
-      </linearGradient>
-      <linearGradient id="screenGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#aebf67"/>
-        <stop offset="100%" stop-color="#8a9a48"/>
-      </linearGradient>
-      <linearGradient id="screenInsetShadow" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#000000" stop-opacity="0.35"/>
-        <stop offset="18%" stop-color="#000000" stop-opacity="0"/>
-        <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
-      </linearGradient>
-      <radialGradient id="btnGrad" cx="35%" cy="28%" r="75%">
-        <stop offset="0%" stop-color="#d968a0"/>
-        <stop offset="55%" stop-color="#a3235f"/>
-        <stop offset="100%" stop-color="#7d1a4a"/>
-      </radialGradient>
-      <linearGradient id="dpadGrad" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#4a4a4a"/>
-        <stop offset="100%" stop-color="#141414"/>
-      </linearGradient>
-      <linearGradient id="pillGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#b0adbd"/>
-        <stop offset="100%" stop-color="#726f80"/>
-      </linearGradient>
-      <filter id="raise" x="-60%" y="-60%" width="220%" height="220%">
-        <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.4"/>
-      </filter>
-      <filter id="bodyShadow" x="-50%" y="-50%" width="200%" height="200%">
-        <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000000" flood-opacity="0.28"/>
-      </filter>
-      <clipPath id="bodyClip">
-        <path d="M76,30 L444,30 A26,26 0 0 1 470,56 L470,620 A90,90 0 0 1 380,710 L76,710 A26,26 0 0 1 50,684 L50,56 A26,26 0 0 1 76,30 Z"/>
-      </clipPath>
-    </defs>
+<canvas id="fibers" aria-hidden="true"></canvas>
 
-    <!-- body -->
-    <path d="M76,30 L444,30 A26,26 0 0 1 470,56 L470,620 A90,90 0 0 1 380,710 L76,710 A26,26 0 0 1 50,684 L50,56 A26,26 0 0 1 76,30 Z"
-          fill="url(#bodyGrad)" stroke="#b7b6ab" stroke-width="1" filter="url(#bodyShadow)"/>
-    <g clip-path="url(#bodyClip)">
-      <rect x="50" y="30" width="420" height="680" fill="url(#edgeShade)"/>
-      <ellipse cx="260" cy="140" rx="260" ry="140" fill="url(#sheenGrad)"/>
-    </g>
-    <path d="M77,35 L443,35 A22,22 0 0 1 465,57 L465,620 A85,85 0 0 1 380,705 L77,705 A22,22 0 0 1 55,683 L55,57 A22,22 0 0 1 77,35 Z"
-          fill="none" stroke="#ffffff" stroke-opacity="0.45" stroke-width="1.5"/>
-
-    <circle cx="92" cy="48" r="6" fill="#38363f"/>
-
-    <!-- title card, in the blank space above the screen -->
-    <text x="260" y="72" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-weight="700" font-size="17" letter-spacing="0.3" fill="#33415e" text-anchor="middle">Wyatt Voigt's Website</text>
-
-    <!-- screen bezel (tagline + accent line removed; screen grown to fill the freed space) -->
-    <rect x="80" y="86" width="360" height="210" rx="22" fill="url(#bezelGrad)" stroke="#302d38" stroke-width="2"/>
-
-    <rect id="screenRect" x="105" y="108" width="310" height="164" rx="10" fill="url(#screenGrad)" stroke="#3a3a2a" stroke-width="2"/>
-    <rect x="105" y="108" width="310" height="164" rx="10" fill="url(#screenInsetShadow)"/>
-    <polygon points="105,108 210,108 140,272 105,272" fill="#ffffff" opacity="0.05"/>
-
-    <!-- menu -->
-    <g id="menuView">
-      <rect x="118" y="118" width="284" height="148" fill="#c3d179" stroke="#2f3a1a" stroke-width="3"/>
-      <text x="260" y="136" font-family="'Courier New', monospace" font-weight="700" font-size="13" letter-spacing="3" fill="#2f3a1a" text-anchor="middle">MENU</text>
-      <rect x="128" y="142" width="264" height="2" fill="#2f3a1a"/>
-      <polygon id="menuArrow" points="138,152 138,162 148,157" fill="#2f3a1a"/>
-      <g class="menu-row" data-index="0">
-        <rect x="128" y="150" width="264" height="14" fill="#000000" opacity="0"/>
-        <text class="menu-item-text" data-index="0" x="156" y="161" font-family="'Courier New', monospace" font-weight="700" font-size="10.5" letter-spacing="1" fill="#2f3a1a">ABOUT</text>
-      </g>
-      <g class="menu-row" data-index="1">
-        <rect x="128" y="166" width="264" height="14" fill="#000000" opacity="0"/>
-        <text class="menu-item-text" data-index="1" x="156" y="177" font-family="'Courier New', monospace" font-weight="700" font-size="10.5" letter-spacing="1" fill="#2f3a1a">LINKEDIN</text>
-      </g>
-      <g class="menu-row" data-index="2">
-        <rect x="128" y="182" width="264" height="14" fill="#000000" opacity="0"/>
-        <text class="menu-item-text" data-index="2" x="156" y="193" font-family="'Courier New', monospace" font-weight="700" font-size="10.5" letter-spacing="1" fill="#2f3a1a">GITHUB</text>
-      </g>
-      <g class="menu-row" data-index="3">
-        <rect x="128" y="198" width="264" height="14" fill="#000000" opacity="0"/>
-        <text class="menu-item-text" data-index="3" x="156" y="209" font-family="'Courier New', monospace" font-weight="700" font-size="10.5" letter-spacing="1" fill="#2f3a1a">RESUME</text>
-      </g>
-      <g class="menu-row" data-index="4">
-        <rect x="128" y="214" width="264" height="14" fill="#000000" opacity="0"/>
-        <text class="menu-item-text" data-index="4" x="156" y="225" font-family="'Courier New', monospace" font-weight="700" font-size="10.5" letter-spacing="1" fill="#2f3a1a">CLASSES</text>
-      </g>
-      <g class="menu-row" data-index="5">
-        <rect x="128" y="230" width="264" height="14" fill="#000000" opacity="0"/>
-        <text class="menu-item-text" data-index="5" x="156" y="241" font-family="'Courier New', monospace" font-weight="700" font-size="10.5" letter-spacing="1" fill="#2f3a1a">PROJECTS</text>
-      </g>
-      <g class="menu-row" data-index="6">
-        <rect x="128" y="246" width="264" height="14" fill="#000000" opacity="0"/>
-        <text class="menu-item-text" data-index="6" x="156" y="257" font-family="'Courier New', monospace" font-weight="700" font-size="10.5" letter-spacing="1" fill="#2f3a1a">EXTRACURRICULARS</text>
-      </g>
-    </g>
-
-    <!-- boot splash: must come after menuView in document order so it paints on top -->
-    <g id="bootView">
-      <rect x="105" y="108" width="310" height="164" rx="10" fill="#3a4a1a"/>
-      <text x="260" y="150" font-family="'Courier New', monospace" font-weight="700" font-size="10" letter-spacing="3" fill="#8fa15a" text-anchor="middle">NOW LOADING</text>
-      <text id="bootRole" x="260" y="180" font-family="'Courier New', monospace" font-weight="700" font-size="16" letter-spacing="1" fill="#c3d179" text-anchor="middle"></text>
-      <text id="bootCompany" x="260" y="202" font-family="'Courier New', monospace" font-weight="700" font-size="12" letter-spacing="1" fill="#c3d179" text-anchor="middle"></text>
-      <text id="bootPeriod" x="260" y="224" font-family="'Courier New', monospace" font-size="10" letter-spacing="1" fill="#8fa15a" text-anchor="middle"></text>
-    </g>
-
-    <rect id="flashOverlay" x="105" y="108" width="310" height="164" rx="10" fill="#ffffff" opacity="0" pointer-events="none"/>
-
-    <!-- battery indicator: LED only -->
-    <circle cx="65" cy="140" r="4" fill="#d5392c"/>
-    <circle cx="63.5" cy="138.5" r="1.3" fill="#ff9a8c" opacity="0.8"/>
-
-    <!-- d-pad: uniform-radius cross, click zones map to up/down -->
-    <g class="dpad-group" transform="translate(150,470)">
-      <g class="dpad-inner">
-        <path d="
-          M 12,-44
-          A 5,5 0 0 1 17,-39
-          L 17,-22
-          A 5,5 0 0 0 22,-17
-          L 39,-17
-          A 5,5 0 0 1 44,-12
-          L 44,12
-          A 5,5 0 0 1 39,17
-          L 22,17
-          A 5,5 0 0 0 17,22
-          L 17,39
-          A 5,5 0 0 1 12,44
-          L -12,44
-          A 5,5 0 0 1 -17,39
-          L -17,22
-          A 5,5 0 0 0 -22,17
-          L -39,17
-          A 5,5 0 0 1 -44,12
-          L -44,-12
-          A 5,5 0 0 1 -39,-17
-          L -22,-17
-          A 5,5 0 0 0 -17,-22
-          L -17,-39
-          A 5,5 0 0 1 -12,-44
-          Z"
-          fill="url(#dpadGrad)" filter="url(#raise)"/>
-        <circle cx="0" cy="0" r="5" fill="#050505"/>
-      </g>
-      <rect class="dpad-hit" data-dir="up" x="-17" y="-44" width="34" height="27" fill="#000000" opacity="0"/>
-      <rect class="dpad-hit" data-dir="down" x="-17" y="17" width="34" height="27" fill="#000000" opacity="0"/>
-    </g>
-
-    <!-- A / B buttons. Note: the outer <g> carries the positional translate() as an
-         attribute; the press-scale lives on an inner group with NO positional transform
-         attribute of its own, because a CSS `transform` on an element replaces (rather
-         than composes with) its `transform` attribute — putting the scale on the same
-         element as the translate would snap the button to the origin while pressed. -->
-    <g class="btn" id="btnB" data-action="back" transform="translate(330,510)">
-      <g class="btn-cap">
-        <circle cx="0" cy="0" r="26" fill="url(#btnGrad)" filter="url(#raise)"/>
-        <ellipse cx="-8" cy="-10" rx="9" ry="6" fill="#ffffff" opacity="0.35" transform="rotate(-20 -8 -10)"/>
-      </g>
-      <text x="0" y="44" font-size="17" font-weight="700" fill="#2a2233" text-anchor="middle" font-family="system-ui, sans-serif">B</text>
-    </g>
-
-    <g class="btn" id="btnA" data-action="confirm" transform="translate(390,460)">
-      <g class="btn-cap">
-        <circle cx="0" cy="0" r="26" fill="url(#btnGrad)" filter="url(#raise)"/>
-        <ellipse cx="-8" cy="-10" rx="9" ry="6" fill="#ffffff" opacity="0.35" transform="rotate(-20 -8 -10)"/>
-      </g>
-      <text x="0" y="44" font-size="17" font-weight="700" fill="#2a2233" text-anchor="middle" font-family="system-ui, sans-serif">A</text>
-    </g>
-
-    <!-- select / start -->
-    <rect x="175" y="590" width="70" height="18" rx="9" fill="url(#pillGrad)" filter="url(#raise)"/>
-    <text x="210" y="626" font-size="8" font-weight="600" letter-spacing="1" fill="#2c2a35" text-anchor="middle" font-family="system-ui, sans-serif">SELECT</text>
-
-    <g class="btn-simple" id="btnStart">
-      <rect x="275" y="590" width="70" height="18" rx="9" fill="url(#pillGrad)" filter="url(#raise)"/>
-      <text x="310" y="626" font-size="8" font-weight="600" letter-spacing="1" fill="#2c2a35" text-anchor="middle" font-family="system-ui, sans-serif">START</text>
-    </g>
-
-    <!-- speaker grille -->
-    <g transform="rotate(-25 400 650)">
-      <rect x="372" y="618" width="56" height="6" rx="3" fill="#8c8a80"/>
-      <rect x="372" y="631" width="56" height="6" rx="3" fill="#8c8a80"/>
-      <rect x="372" y="644" width="56" height="6" rx="3" fill="#8c8a80"/>
-      <rect x="372" y="657" width="56" height="6" rx="3" fill="#8c8a80"/>
-      <rect x="372" y="670" width="56" height="6" rx="3" fill="#8c8a80"/>
-      <rect x="372" y="683" width="56" height="6" rx="3" fill="#8c8a80"/>
-    </g>
-  </svg>
+<div class="corner tl">
+  <strong>Wyatt Voigt</strong>
+  Computer engineering, Texas A&amp;M
 </div>
+<div class="corner br">
+  <kbd>W</kbd><kbd>S</kbd> or <kbd>&uarr;</kbd><kbd>&darr;</kbd> choose &nbsp;
+  <kbd>D</kbd> or <kbd>&rarr;</kbd> open &nbsp;
+  <kbd>A</kbd> or <kbd>&larr;</kbd> back
+</div>
+
+<main class="stage">
+  <div class="tilt" id="tilt">
+    <div class="device" id="device">
+      <div class="power"><i></i>POWER</div>
+
+      <div class="bezel">
+        <div class="screen" id="screenRect">
+          <div class="scr-head">
+            <div>
+              <div class="scr-title">Wyatt Voigt</div>
+              <div class="scr-sub">Computer Engineering, TAMU</div>
+            </div>
+            <span class="batt" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          </div>
+
+          <div class="scr-body">
+            <ul class="menu" id="menu" role="listbox" aria-label="Sections"></ul>
+            <div class="stat">
+              <span class="stat-label">Degree progress</span>
+              <div class="ring">
+                <svg viewBox="0 0 66 66" aria-hidden="true">
+                  <circle cx="33" cy="33" r="27" fill="none" stroke="rgba(240,223,184,0.1)" stroke-width="6"/>
+                  <circle id="ringArc" cx="33" cy="33" r="27" fill="none" stroke="#f3b544" stroke-width="6" stroke-linecap="round"
+                          stroke-dasharray="169.6" stroke-dashoffset="169.6" style="filter: drop-shadow(0 0 3px rgba(243,181,68,.6)); transition: stroke-dashoffset 1.4s cubic-bezier(.2,.7,.2,1) .6s"/>
+                </svg>
+                <div class="num" id="ringNum">0%</div>
+              </div>
+              <div class="stat-foot"><b id="lastRole"></b><span id="lastCo"></span></div>
+              <svg class="spark" viewBox="0 0 88 22" preserveAspectRatio="none" aria-hidden="true">
+                <polyline id="spark" fill="none" stroke="#f3b544" stroke-width="1.2" stroke-linejoin="round" points=""/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="scr-hint">
+            <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.8 9.4 9H0.6Z" fill="none" stroke="#f3b544" stroke-width="1.2" stroke-linejoin="round"/></svg>
+            <span id="hint"></span>
+          </div>
+
+          <div class="boot" id="bootView">
+            <span class="b1">Now loading</span>
+            <span class="b2" id="bootRole"></span>
+            <span class="b3" id="bootCompany"></span>
+            <span class="b1" id="bootPeriod"></span>
+            <span class="bar"><i></i></span>
+          </div>
+          <div class="flash" id="flashOverlay"></div>
+        </div>
+      </div>
+
+      <div class="mark">Wyatt Voigt <span>Pocket</span></div>
+
+      <div class="dpad" id="dpad">
+        <div class="cross"></div>
+        <div class="hub"></div>
+        <span class="arrow u"></span><span class="arrow d"></span><span class="arrow l"></span><span class="arrow r"></span>
+        <button class="hit up" data-dir="up" aria-label="Previous item"></button>
+        <button class="hit down" data-dir="down" aria-label="Next item"></button>
+        <button class="hit left" data-dir="left" aria-label="Go back"></button>
+        <button class="hit right" data-dir="right" aria-label="Open selected"></button>
+      </div>
+
+      <button class="hit ab b" id="btnB" aria-label="B: go back"><span class="cap">B</span></button>
+      <button class="hit ab a" id="btnA" aria-label="A: open selected"><span class="cap">A</span></button>
+
+      <div class="pills">
+        <div class="p"><span class="bar"></span><span class="lbl">SELECT</span></div>
+        <button class="hit p" id="btnStart" aria-label="Start: open selected"><span class="bar"></span><span class="lbl">START</span></button>
+      </div>
+
+      <div class="vents"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="port" aria-hidden="true"></div>
+    </div>
+  </div>
+</main>
+
 <div id="detailContainer">
   <iframe id="detailFrame" title="Section detail"></iframe>
 </div>
@@ -266,57 +440,125 @@
 <script src="resume-data.js"></script>
 <script>
 (function () {
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   var items = [
-    { label: 'ABOUT', action: function () { openDetail('about.html'); } },
-    { label: 'LINKEDIN', action: function () { window.open('https://www.linkedin.com/in/wyatt-voigt-b72920385/', '_blank'); } },
-    { label: 'GITHUB', action: function () { window.open('https://github.com/WyattVO', '_blank'); } },
-    { label: 'RESUME', action: function () { window.open('resume.pdf', '_blank'); } },
-    { label: 'CLASSES', action: function () { openDetail('classes.html'); } },
-    { label: 'PROJECTS', action: function () { openDetail('projects.html'); } },
-    { label: 'EXTRACURRICULARS', action: function () { openDetail('extracurriculars.html'); } }
+    { label: 'About', hint: 'Who I am and how to reach me', action: function () { openDetail('about.html'); } },
+    { label: 'Projects', hint: 'Hackathon wins and things I have built', action: function () { openDetail('projects.html'); } },
+    { label: 'Classes', hint: 'Coursework from high school to senior design', action: function () { openDetail('classes.html'); } },
+    { label: 'Extracurriculars', hint: 'Clubs, competitions and hobbies', action: function () { openDetail('extracurriculars.html'); } },
+    { label: 'Resume', ext: true, hint: 'Opens my resume as a PDF in a new tab', action: function () { window.open('resume.pdf', '_blank'); } },
+    { label: 'GitHub', ext: true, hint: 'Opens github.com/WyattVO in a new tab', action: function () { window.open('https://github.com/WyattVO', '_blank'); } },
+    { label: 'LinkedIn', ext: true, hint: 'Opens my LinkedIn profile in a new tab', action: function () { window.open('https://www.linkedin.com/in/wyatt-voigt-b72920385/', '_blank'); } }
   ];
-  var rowY = [161, 177, 193, 209, 225, 241, 257];
 
   var selectedIndex = 0;
   var currentView = 'boot';
   var bootEnded = false;
 
-  var deviceSvg = document.getElementById('deviceSvg');
+  var tilt = document.getElementById('tilt');
   var screenRect = document.getElementById('screenRect');
   var detailContainer = document.getElementById('detailContainer');
   var detailFrame = document.getElementById('detailFrame');
-  var menuView = document.getElementById('menuView');
   var bootView = document.getElementById('bootView');
   var flashOverlay = document.getElementById('flashOverlay');
-  var menuArrow = document.getElementById('menuArrow');
-  var rowTexts = Array.prototype.slice.call(document.querySelectorAll('.menu-item-text'));
-  var rowGroups = Array.prototype.slice.call(document.querySelectorAll('.menu-row'));
+  var menu = document.getElementById('menu');
+  var hint = document.getElementById('hint');
+  var dpad = document.getElementById('dpad');
+
+  // ---------- menu ----------
+  items.forEach(function (it, i) {
+    var li = document.createElement('li');
+    li.setAttribute('role', 'option');
+    li.innerHTML = '<span>' + it.label + '</span>' + (it.ext ? '<span class="ext">&#8599;</span>' : '');
+    li.addEventListener('click', function () {
+      if (currentView === 'boot') { endBoot(); return; }
+      if (currentView !== 'menu') return;
+      selectedIndex = i;
+      renderMenu();
+      confirmSelection();
+    });
+    li.addEventListener('mouseenter', function () {
+      if (currentView !== 'menu') return;
+      selectedIndex = i;
+      renderMenu();
+    });
+    menu.appendChild(li);
+  });
+  var rows = Array.prototype.slice.call(menu.children);
 
   function renderMenu() {
-    rowTexts.forEach(function (el) {
-      var i = Number(el.getAttribute('data-index'));
-      el.style.opacity = i === selectedIndex ? '1' : '0.55';
+    rows.forEach(function (li, i) {
+      li.classList.toggle('sel', i === selectedIndex);
+      li.setAttribute('aria-selected', i === selectedIndex ? 'true' : 'false');
     });
-    var y = rowY[selectedIndex];
-    menuArrow.setAttribute('points', '138,' + (y - 9) + ' 138,' + (y + 1) + ' 148,' + (y - 4));
+    hint.textContent = items[selectedIndex].hint;
   }
 
+  // ---------- screen data ----------
+  (function renderStats() {
+    var start = new Date(2023, 7, 15), end = new Date(2027, 4, 15), now = new Date();
+    var pct = Math.max(0, Math.min(1, (now - start) / (end - start)));
+    var c = 2 * Math.PI * 27;
+    var arc = document.getElementById('ringArc');
+    var num = document.getElementById('ringNum');
+    var target = Math.round(pct * 100);
+    setTimeout(function () { arc.style.strokeDashoffset = String(c * (1 - pct)); }, 50);
+    if (reduceMotion) { num.textContent = target + '%'; }
+    else {
+      var t0 = null;
+      setTimeout(function () {
+        requestAnimationFrame(function step(ts) {
+          if (!t0) t0 = ts;
+          var k = Math.min(1, (ts - t0) / 1400);
+          num.textContent = Math.round(target * (1 - Math.pow(1 - k, 3))) + '%';
+          if (k < 1) requestAnimationFrame(step);
+        });
+      }, 600);
+    }
+
+    var exp = window.RESUME_DATA && window.RESUME_DATA.experience;
+    var latest = exp && exp[0];
+    if (latest) {
+      document.getElementById('lastRole').textContent = latest.title;
+      document.getElementById('lastCo').textContent = latest.company + ', ' + latest.period.replace(/\s*—\s*/, '–');
+      document.getElementById('bootRole').textContent = latest.title;
+      document.getElementById('bootCompany').textContent = '@ ' + latest.company;
+      document.getElementById('bootPeriod').textContent = latest.period;
+    }
+
+    // a small signal trace, just for texture
+    var pts = [], y = 14;
+    for (var x = 0; x <= 88; x += 4) {
+      y = Math.max(3, Math.min(19, y + (Math.random() - 0.55) * 6));
+      pts.push(x + ',' + y.toFixed(1));
+    }
+    document.getElementById('spark').setAttribute('points', pts.join(' '));
+  })();
+
+  // ---------- actions ----------
   function flashScreen(cb) {
     flashOverlay.style.transition = 'none';
     flashOverlay.style.opacity = '0';
     requestAnimationFrame(function () {
-      flashOverlay.style.transition = 'opacity 150ms ease-out';
-      flashOverlay.style.opacity = '0.85';
+      flashOverlay.style.transition = 'opacity 140ms ease-out';
+      flashOverlay.style.opacity = '0.7';
       setTimeout(function () {
-        flashOverlay.style.transition = 'opacity 150ms ease-in';
+        flashOverlay.style.transition = 'opacity 140ms ease-in';
         flashOverlay.style.opacity = '0';
-        setTimeout(cb, 150);
-      }, 150);
+        setTimeout(cb, 140);
+      }, 140);
     });
+  }
+
+  function pressDpad(dir) {
+    dpad.classList.add('press-' + dir);
+    setTimeout(function () { dpad.classList.remove('press-' + dir); }, 120);
   }
 
   function moveSelection(delta) {
     if (currentView !== 'menu') return;
+    pressDpad(delta < 0 ? 'up' : 'down');
     selectedIndex = (selectedIndex + delta + items.length) % items.length;
     renderMenu();
   }
@@ -326,14 +568,19 @@
     flashScreen(function () { items[selectedIndex].action(); });
   }
 
-  function openDetail(page) {
-    currentView = 'detail';
+  function placeOverScreen() {
     var r = screenRect.getBoundingClientRect();
-    detailContainer.style.transition = 'none';
     detailContainer.style.left = r.left + 'px';
     detailContainer.style.top = r.top + 'px';
     detailContainer.style.width = r.width + 'px';
     detailContainer.style.height = r.height + 'px';
+    detailContainer.style.borderRadius = '10px';
+  }
+
+  function openDetail(page) {
+    currentView = 'detail';
+    detailContainer.style.transition = 'none';
+    placeOverScreen();
     detailContainer.style.opacity = '0';
     detailFrame.src = page;
     void detailContainer.offsetWidth;
@@ -345,23 +592,19 @@
       detailContainer.style.top = '0px';
       detailContainer.style.width = '100vw';
       detailContainer.style.height = '100vh';
-      deviceSvg.style.opacity = '0';
+      detailContainer.style.borderRadius = '0px';
+      tilt.style.opacity = '0';
     });
   }
 
   function goBack() {
     if (currentView !== 'detail') return;
     currentView = 'menu';
-    // reclaim keyboard focus from the iframe so arrow/A/B keys reach the menu again
     try { detailFrame.blur(); } catch (e) {}
     window.focus();
-    var r = screenRect.getBoundingClientRect();
-    deviceSvg.style.opacity = '1';
+    tilt.style.opacity = '1';
     detailContainer.style.opacity = '0';
-    detailContainer.style.left = r.left + 'px';
-    detailContainer.style.top = r.top + 'px';
-    detailContainer.style.width = r.width + 'px';
-    detailContainer.style.height = r.height + 'px';
+    placeOverScreen();
     setTimeout(function () {
       detailContainer.style.pointerEvents = 'none';
       detailFrame.src = 'about:blank';
@@ -369,54 +612,56 @@
   }
   window.__gbGoBack = goBack;
 
-  function renderBootExperience() {
-    var experience = window.RESUME_DATA && window.RESUME_DATA.experience;
-    var latest = experience && experience[0];
-    if (!latest) return;
-    document.getElementById('bootRole').textContent = latest.title;
-    document.getElementById('bootCompany').textContent = '@ ' + latest.company;
-    document.getElementById('bootPeriod').textContent = latest.period;
-  }
-  renderBootExperience();
-
   function endBoot() {
     if (bootEnded) return;
     bootEnded = true;
-    bootView.classList.add('boot-hide');
+    bootView.classList.add('hide');
     currentView = 'menu';
     renderMenu();
   }
-
-  setTimeout(endBoot, 1600);
-
-  document.addEventListener('keydown', function (e) {
-    if (currentView === 'boot') { endBoot(); return; }
-    var key = e.key.toLowerCase();
-    if (key === 'arrowup') { moveSelection(-1); }
-    else if (key === 'arrowdown') { moveSelection(1); }
-    else if (key === 'enter' || key === ' ' || key === 'a') { e.preventDefault(); confirmSelection(); }
-    else if (key === 'escape' || key === 'backspace' || key === 'b') { goBack(); }
-  });
-
+  setTimeout(endBoot, reduceMotion ? 300 : 1700);
   bootView.addEventListener('click', endBoot);
 
-  rowGroups.forEach(function (g) {
-    g.addEventListener('click', function () {
-      if (currentView === 'boot') { endBoot(); return; }
-      if (currentView !== 'menu') return;
-      selectedIndex = Number(g.getAttribute('data-index'));
-      renderMenu();
+  // W/S or up/down move, D or right opens, A or left goes back.
+  // Enter/Space and Esc/Backspace/B still work too.
+  var KEY_UP = ['arrowup', 'w'], KEY_DOWN = ['arrowdown', 's'];
+  var KEY_OPEN = ['arrowright', 'd', 'enter', ' '];
+  var KEY_BACK = ['arrowleft', 'a', 'escape', 'backspace', 'b'];
+
+  document.addEventListener('keydown', function (e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (currentView === 'boot') { endBoot(); return; }
+    var key = e.key.toLowerCase();
+    var dir = KEY_UP.indexOf(key) >= 0 ? -1 : KEY_DOWN.indexOf(key) >= 0 ? 1 : 0;
+
+    if (currentView === 'detail') {
+      // the page inside the screen doesn't have focus yet, so scroll it from here
+      if (dir) {
+        e.preventDefault();
+        try { detailFrame.contentWindow.scrollBy({ top: dir * 160, behavior: 'smooth' }); } catch (err) {}
+      } else if (KEY_BACK.indexOf(key) >= 0) { e.preventDefault(); goBack(); }
+      return;
+    }
+
+    if (dir) { e.preventDefault(); moveSelection(dir); }
+    else if (KEY_OPEN.indexOf(key) >= 0) {
+      if (key === ' ' && document.activeElement !== document.body) return;
+      e.preventDefault();
+      pressDpad('right');
       confirmSelection();
-    });
+    }
+    else if (KEY_BACK.indexOf(key) >= 0) { pressDpad('left'); goBack(); }
   });
 
-  document.querySelectorAll('.dpad-hit').forEach(function (hit) {
-    hit.addEventListener('click', function () {
+  dpad.querySelectorAll('button').forEach(function (b) {
+    b.addEventListener('click', function () {
       if (currentView === 'boot') { endBoot(); return; }
-      moveSelection(hit.getAttribute('data-dir') === 'up' ? -1 : 1);
+      var d = b.getAttribute('data-dir');
+      if (d === 'up' || d === 'down') { moveSelection(d === 'up' ? -1 : 1); return; }
+      pressDpad(d);
+      if (d === 'right') confirmSelection(); else goBack();
     });
   });
-
   document.getElementById('btnA').addEventListener('click', function () {
     if (currentView === 'boot') { endBoot(); return; }
     confirmSelection();
@@ -430,7 +675,156 @@
     confirmSelection();
   });
 
+  // ---------- fit + pointer tilt ----------
+  var baseRY = -16, baseRX = 5;
+  function fit() {
+    var w = window.innerWidth, h = window.innerHeight;
+    var s = Math.min(1.15, (h - 90) / 640, (w - 32) / 400);
+    tilt.style.setProperty('--s', Math.max(0.5, s).toFixed(3));
+    if (w < 640) { baseRY = -8; baseRX = 3; } else { baseRY = -16; baseRX = 5; }
+    tilt.style.setProperty('--ry', baseRY + 'deg');
+    tilt.style.setProperty('--rx', baseRX + 'deg');
+  }
+  fit();
+  window.addEventListener('resize', fit);
+
+  if (!reduceMotion && window.matchMedia('(pointer: fine)').matches) {
+    window.addEventListener('pointermove', function (e) {
+      if (currentView === 'detail') return;
+      var nx = e.clientX / window.innerWidth - 0.5;
+      var ny = e.clientY / window.innerHeight - 0.5;
+      tilt.style.setProperty('--ry', (baseRY + nx * 10).toFixed(2) + 'deg');
+      tilt.style.setProperty('--rx', (baseRX - ny * 8).toFixed(2) + 'deg');
+    });
+  }
+
   renderMenu();
+})();
+
+// ---------- fiber-optic background ----------
+(function () {
+  var cv = document.getElementById('fibers');
+  var ctx = cv.getContext('2d');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var W, H, dpr, strands = [], sparks = [], bokeh = [];
+
+  // pre-rendered glow sprite, cheaper than shadowBlur per particle
+  var glow = document.createElement('canvas');
+  glow.width = glow.height = 64;
+  (function () {
+    var g = glow.getContext('2d');
+    var grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+    grd.addColorStop(0, 'rgba(255,236,190,1)');
+    grd.addColorStop(0.18, 'rgba(255,196,90,0.9)');
+    grd.addColorStop(0.45, 'rgba(243,160,50,0.25)');
+    grd.addColorStop(1, 'rgba(243,160,50,0)');
+    g.fillStyle = grd;
+    g.fillRect(0, 0, 64, 64);
+  })();
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+
+  function build() {
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    strands = [];
+    var count = W < 640 ? 48 : 90;
+    for (var i = 0; i < count; i++) {
+      var bundle = i % 2;
+      strands.push({
+        y0: H * (bundle ? 0.2 : 0.75) + rand(-H * 0.12, H * 0.12),
+        y3: H * (bundle ? 0.55 : 0.45) + rand(-H * 0.08, H * 0.08),
+        a1: rand(0.18, 0.32) * H * (bundle ? 1 : -1),
+        a2: rand(0.18, 0.32) * H * (bundle ? -1 : 1),
+        ph: rand(0, Math.PI * 2),
+        sp: rand(0.15, 0.35),
+        w: rand(0.4, 1.1),
+        alpha: rand(0.12, 0.32)
+      });
+    }
+    sparks = [];
+    for (var j = 0; j < (W < 640 ? 26 : 55); j++) {
+      sparks.push({ s: Math.floor(Math.random() * strands.length), t: Math.random(), v: rand(0.0006, 0.0022), r: rand(6, 16) });
+    }
+    bokeh = [];
+    for (var k = 0; k < 9; k++) {
+      var side = Math.random() < 0.5;
+      bokeh.push({ x: side ? rand(0, W * 0.2) : rand(W * 0.8, W), y: rand(H * 0.55, H), r: rand(14, 46), a: rand(0.08, 0.25) });
+    }
+  }
+
+  function pts(st, time) {
+    var wob = Math.sin(time * st.sp + st.ph);
+    return [
+      -60, st.y0,
+      W * 0.32, st.y0 + st.a1 + wob * 18,
+      W * 0.68, st.y3 + st.a2 - wob * 18,
+      W + 60, st.y3 + wob * 6
+    ];
+  }
+  function at(p, t) {
+    var u = 1 - t;
+    return [
+      u*u*u*p[0] + 3*u*u*t*p[2] + 3*u*t*t*p[4] + t*t*t*p[6],
+      u*u*u*p[1] + 3*u*u*t*p[3] + 3*u*t*t*p[5] + t*t*t*p[7]
+    ];
+  }
+
+  function frame(ms) {
+    var time = ms / 1000;
+    var bg = ctx.createRadialGradient(W * 0.5, H * 0.45, 0, W * 0.5, H * 0.5, Math.max(W, H) * 0.75);
+    bg.addColorStop(0, '#2b2017');
+    bg.addColorStop(0.55, '#161009');
+    bg.addColorStop(1, '#0a0705');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    var warm = ctx.createRadialGradient(0, H, 0, 0, H, W * 0.5);
+    warm.addColorStop(0, 'rgba(214,140,90,0.28)');
+    warm.addColorStop(1, 'rgba(214,140,90,0)');
+    ctx.fillStyle = warm;
+    ctx.fillRect(0, 0, W, H);
+
+    var cache = new Array(strands.length);
+    ctx.lineCap = 'round';
+    for (var i = 0; i < strands.length; i++) {
+      var st = strands[i], p = pts(st, time);
+      cache[i] = p;
+      ctx.beginPath();
+      ctx.moveTo(p[0], p[1]);
+      ctx.bezierCurveTo(p[2], p[3], p[4], p[5], p[6], p[7]);
+      ctx.strokeStyle = 'rgba(236,214,170,' + st.alpha + ')';
+      ctx.lineWidth = st.w;
+      ctx.stroke();
+    }
+
+    ctx.globalCompositeOperation = 'lighter';
+    for (var k = 0; k < bokeh.length; k++) {
+      var b = bokeh[k];
+      ctx.globalAlpha = b.a;
+      ctx.drawImage(glow, b.x - b.r * 2, b.y - b.r * 2, b.r * 4, b.r * 4);
+    }
+    for (var j = 0; j < sparks.length; j++) {
+      var s = sparks[j];
+      if (!reduceMotion) { s.t += s.v; if (s.t > 1) { s.t = 0; s.s = Math.floor(Math.random() * strands.length); } }
+      var q = at(cache[s.s], s.t);
+      var fade = Math.sin(s.t * Math.PI);
+      ctx.globalAlpha = 0.9 * fade;
+      ctx.drawImage(glow, q[0] - s.r, q[1] - s.r, s.r * 2, s.r * 2);
+    }
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'source-over';
+
+    if (!reduceMotion && !document.hidden) requestAnimationFrame(frame);
+  }
+
+  build();
+  window.addEventListener('resize', function () { build(); if (reduceMotion) frame(0); });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && !reduceMotion) requestAnimationFrame(frame); });
+  requestAnimationFrame(frame);
 })();
 </script>
 </body>

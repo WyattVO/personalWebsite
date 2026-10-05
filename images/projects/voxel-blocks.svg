@@ -1,13 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <g stroke="#2f3a1a" stroke-width="2.5" stroke-linejoin="round">
-    <polygon points="50,10 78,25 50,40 22,25" fill="#c3d179"/>
-    <polygon points="22,25 50,40 50,70 22,55" fill="#8a9a48"/>
-    <polygon points="78,25 50,40 50,70 78,55" fill="#6f7d3a"/>
-    <polygon points="50,40 78,55 50,90 22,55" fill="#8a9a48" opacity="0"/>
-  </g>
-  <g stroke="#2f3a1a" stroke-width="2.5" stroke-linejoin="round">
-    <polygon points="50,60 64,67.5 50,75 36,67.5" fill="#c3d179"/>
-    <polygon points="36,67.5 50,75 50,90 36,82.5" fill="#8a9a48"/>
-    <polygon points="64,67.5 50,75 50,90 64,82.5" fill="#6f7d3a"/>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="#ead7ab" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 22l12-7v14l-12 7z"/><path d="M24 22L12 15v14l12 7z" opacity=".7"/><path d="M24 8l12 7-12 7-12-7z" fill="#f3b544" fill-opacity=".25" stroke="#f3b544"/></svg>
